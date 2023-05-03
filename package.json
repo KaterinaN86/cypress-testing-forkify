@@ -1,0 +1,28 @@
+{
+  "name": "cypress-testing-forkify",
+  "version": "1.0.0",
+  "description": "testing Forkify demo site with cypress automation framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaterinaN86/cypress-testing-forkify.git"
+  },
+  "keywords": [
+    "cypress",
+    "javaScript",
+    "forkify"
+  ],
+  "author": "Katerina Naumova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaterinaN86/cypress-testing-forkify/issues"
+  },
+  "homepage": "https://github.com/KaterinaN86/cypress-testing-forkify#readme",
+  "devDependencies": {
+    "cypress": "^12.6.0",
+    "cypress-xpath": "^2.0.1"
+  }
+}
