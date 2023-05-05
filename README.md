@@ -1,7 +1,7 @@
 # Project for testing [https://forkify-k-project.netlify.app/](https://forkify-k-project.netlify.app/) using Cypress automation framework
 
 - Cypress is a next generation front end testing tool built for the modern web. It is open source and runs on Windows, Linux, and macOS. It is often compared to Selenium, however, it runs inside the browser and it uses JavaScript and nodeJS. For this purpose it is needed to download and install node JS. Git also needs to be installed on our machine in order to be able to use Git Bash for running commands with Visual Studio Code terminal (this is a recommendation, another IDE can also be used).
-- Cypress features:
+  Cypress features:
   1. Time Travel: Cypress takes snapshots as your tests run. Hover over commands in the Command Log to see exactly what happened at each step.
   2. Debuggability: offers readable errors and stack traces for fast debugging.
   3. Automatic Waiting: cypress automatically waits for commands and assertions before moving on.
