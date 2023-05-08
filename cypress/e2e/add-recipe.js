@@ -26,6 +26,7 @@ describe("Test Add recipe form", () => {
         force: true,
       }
     );
+    //Using relative XPaths to select DOM elements in ingredient input section.
     //Adding ingredient 1
     cy.xpath('//input[@id="quantity"]').type("2");
     cy.xpath('//input[@id="unit"]').type("cans");
