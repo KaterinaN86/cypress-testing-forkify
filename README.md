@@ -47,6 +47,7 @@
   ![Overwriting settings in the cypress.config.js file](./cypress/fixtures/readme-images/config-overwriting.png)
 
 - Following execution, **json reports** can be saved in the **results** directory.
+- In the **screenshot** directory images of executed tests are stored.
 - Cypress also has the capability to record text execution and videos are saved in the corresponding **videos** directory.
 
 - **add-recipe.js** file contains tests regarding **add recipe** form.
