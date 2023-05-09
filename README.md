@@ -19,21 +19,21 @@
 
 ## Setting up our project
 
-1. Root project directory **cypress-testing-forkify** is created. This test project was built by using **Visual Studio Code** IDE which also needs to be installed.
-2. Initializing **package.json** file by using the following command via **Git Bash** terminal (Terminal -> New Terminal -> Select Bash on bottom right): `npm init`.
-3. Install cypress framework using this command: `npm install --save-dev cypress@12.6.0`. This will add **node_modules** directory in the project root directory. When copying this project this directory doesn't have to be transferred together with project content because it can easily be added in the same manner as described above.
+1.  Root project directory **cypress-testing-forkify** is created. This test project was built by using **Visual Studio Code** IDE which also needs to be installed.
+2.  Initializing **package.json** file by using the following command via **Git Bash** terminal (Terminal -> New Terminal -> Select Bash on bottom right): `npm init`.
+3.  Install cypress framework using this command: `npm install --save-dev cypress@12.6.0`. This will add **node_modules** directory in the project root directory. When copying this project this directory doesn't have to be transferred together with project content because it can easily be added in the same manner as described above.
 
-    - **Note:** Installed version matches one used in Udemy tutorial [https://www.udemy.com/course/cypress-io-master-class](https://www.udemy.com/course/cypress-io-master-class).
+    -   **Note:** Installed version matches one used in Udemy tutorial [https://www.udemy.com/course/cypress-io-master-class](https://www.udemy.com/course/cypress-io-master-class).
 
-4. Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
+4.  Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
+    When we visit a site while performing tests with cypress, the framework picks up on some additional information like XHR logs and can detect some errors on loading which is particularly useful for developers. In the Cypress App executed cypress commands are written in bold text. - Tests can be run in different browsers and selecting a browser is very simple by using the Cypress App.
+    ![Browser selection in Cypress App](./cypress/fixtures/readme-images/browser-selection.png) - **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
 
-    - **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
+            ```
+            specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
+            ```
 
-        ```
-        specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
-        ```
-
-        The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block.
+    The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block.
 
 ## Project structure
 
@@ -62,4 +62,41 @@
     -   **describe()**: used to group tests in Mocha, basically groups a series of tests together. This function takes two arguments: the name of the test group and the callback function (function accessible by another function, called after the first function has successfully finished executing).
     -   **it()**: a way to describe each individual test case which is nested inside the describe block. **it()** should be described in a way that makes sense for the given test case.
 
--   **add-recipe.js** file contains tests regarding **add recipe** form.
+## Basic Cypress commands
+
+To be able to use Cypress commands it is necessary to specify the file will be referencing Cypress: `/// <reference types="Cypress" />`. After adding reference, Visual Studio Code enables easy access to all Cypress commands used to write tests, like **get()** for accessing DOM elements by using selectors or **visit()** for accessing a specific URL.
+
+![Using Cypress commands](./cypress/fixtures/readme-images/cypress-commands.png)
+
+## Web elements and selectors
+
+-   The **DOM (Document Object Model)** defines a standard for accessing documents, more precisely a platform and language-neutral interface that allows programs and scripts to dynamically access and update the content, structure, and style of a document. If web content is written in Java Script for example, it is the interface between that code and the HTML documents that are rendered in or by the browser. A tree-like structure made out of nodes is generated for HTML documents, called the **DOM tree**. The DOM tree represents the elements as nodes and there is a hierarchy (for example, element HTML is the parent of head and body which are siblings). So basically, web elements are accessed by using the generated nodes in the DOM tree structure.
+-   In Cypress, web elements are accessed by using selectors. When a test is run using the Cypress App a tool for automatically defining selectors is available. First, the tool is activated and then by clicking on a specific element a selector is generated:
+
+    ![Cypress App selector generating](./cypress/fixtures/readme-images/generating-selectors.png)
+
+    This selector is then used to access the specified element: `cy.get('#contact-us > .thumbnail').click();`.
+
+### Using options with **click()**
+
+-   Sometimes an element is visible in the DOM but can not be accessed because of a certain setting. In this case, certain options need to be passed together with the click command. If an element is not accessible the **force** option is used which forces the action and disables the waiting for actionability property: `cy.get('textarea.feedback-input').type('Enter comment here', {force:true})`.
+
+-   In the script **cypress/e2e/add-recipe.js** a test suite is written for testing the **Add Recipe** feature of the demo app.
+
+    -   The first test describes a happy path where all data is entered in the correct format. After uploading entered data corresponding message of successful recipe upload is displayed.
+    -   The next two tests describe unhappy paths where not all data is entered and data is entered in invalid format. In the first case, user is notified about missing data and in the second a message is displayed stating that format used to enter ingredient data is invalid.
+
+-   **Note**: By using the \*\*only\*\* command Mocha is directed to execute only that test. To execute all test cases in test suite, remove **only** after **it()** command in the first test of the suite.
+
+### Selectors
+
+To easily define correct selectors Chrome plugin **Ranorex celocity** can be added to the browser. When using Ranorex Celocity in Chrome, an element can be selected using the **select element** tool (right-click -> inspect) and inspecting the element a type or attribute can be used, like so: `a > ul`. This means that an unordered list element will be selected that is embedded in an anchor element. In the Forkify app, `div > h4` can be used to select all recipes that appear in search results. After that, several selector options are offered in the **List of selectors** area. To select a specific heading of a recipe in search results, following XPath: `(//h4[text()="Mediterranean Chickpea Salad"])` can be used.
+
+![Using Ranorex Celocity addon in Chrome](./cypress/fixtures/readme-images/ranorex-celocity.png) - **Note**: it is highly advisable to add custom attributes (like name, id, specific class and so on) when creating web elements so they are easily accessed when testing.
+
+-   A **class selector** is a name preceded by a full stop (“.”), example: **.subcategories**.
+-   An **ID selector** is a name preceded by the hash character (“#”), example **#homepageHeader**. This is a typical CSS selector. Documentation on CSS selectors: [https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and here [https://www.tutorialspoint.com/xpath/index.htm](https://www.tutorialspoint.com/xpath/index.htm).
+    -   **Note**: While ID is used to identify only one element, a class can be used to identify more than one element. A combination of these selectors can also be used, as shown in example above: `'#contact-us > .thumbnail'`. This way, a child element, with class attribute ".thumbnail", of of the element with id "contact-us" is selected.
+-   **XPath** selectors. Full documentation can be found here [https://www.w3schools.com/xml/xpath_syntax.asp](https://www.w3schools.com/xml/xpath_syntax.asp). These selectors usually start with **//** which means they are relative and all elements will be selected no matter where they are in the document. For absolute XPath **/** is used and elements are selected starting from the root of the document. The star symbol (**\***) represents a wild card. The **@** symbol is used to access an attribute: `//input[@id="quantity"]`. - An XPath expression often contains functions, like for example the string function **text()**: `//p[text()="Start by searching for a recipe or an ingredient. Have fun!"]`, **contains()**: `//div[contains(@class,"search")]` or **starts-with()**: `//input[starts-with(@placeholder,"Search")]`.
+-   **XPath Axes** [https://www.w3schools.com/xml/xpath_axes.asp](https://www.w3schools.com/xml/xpath_axes.asp) are also very useful when writing XPath expressions. An axis is used to locate nodes relative to the current node on the tree. Basically, relations between nodes in the DOM tree can be used to select an element, for example: `//input[@id="description"]/following-sibling::textarea`.
+    .
