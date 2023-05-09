@@ -6,16 +6,16 @@
 
 ## Cypress features:
 
-1. Time Travel: Cypress takes snapshots as your tests run. Hover over commands in the Command Log to see exactly what happened at each step.
-2. Debuggability: offers readable errors and stack traces for fast debugging.
-3. Automatic Waiting: cypress automatically waits for commands and assertions before moving on.
-4. Spies, Stubs, and Clocks: features to verify and control the behavior of functions, server responses, or timers.
-5. Network Traffic Control: control, stub, and test edge cases without involving a server.
-6. Consistent Results: fast, consistent and reliable tests without Selenium or WebDriver.
-7. Screenshots and Videos: screenshots taken automatically on failure, or videos of an entire test suite when run from the CLI. Screenshots and videos can be recorded to Cypress Cloud and stored with test results for zero-configuration debugging.
-8. Cross Browser Testing: tests can run using Firefox and Chrome-family browsers (including Edge and Electron) locally and optimally in a Continuous Integration pipeline.
-9. Smart Orchestration: by setting up to record to Cypress Cloud, a test suite can be parallelized, failed specs can rerun first with Spec Prioritization, and test runs can be canceled on failures with Auto Cancellation for tight feedback loops.
-10. Flake Detection: enables discovering and diagnosing unreliable tests with Cypress Cloud's Flaky test management.
+1. **Time Travel**: Cypress takes snapshots as your tests run. Hover over commands in the Command Log to see exactly what happened at each step.
+2. **Debuggability**: offers readable errors and stack traces for fast debugging.
+3. **Automatic Waiting**: cypress automatically waits for commands and assertions before moving on.
+4. **Spies, Stubs, and Clocks**: features to verify and control the behavior of functions, server responses, or timers.
+5. **Network Traffic Control**: control, stub, and test edge cases without involving a server.
+6. **Consistent Results**: fast, consistent and reliable tests without Selenium or WebDriver.
+7. **Screenshots and Videos**: screenshots taken automatically on failure, or videos of an entire test suite when run from the CLI. Screenshots and videos can be recorded to Cypress Cloud and stored with test results for zero-configuration debugging.
+8. **Cross Browser Testing**: tests can run using Firefox and Chrome-family browsers (including Edge and Electron) locally and optimally in a Continuous Integration pipeline.
+9. **Smart Orchestration**: by setting up to record to Cypress Cloud, a test suite can be parallelized, failed specs can rerun first with Spec Prioritization, and test runs can be canceled on failures with Auto Cancellation for tight feedback loops.
+10. **Flake Detection**: enables discovering and diagnosing unreliable tests with Cypress Cloud's Flaky test management.
 
 ## Setting up our project
 
@@ -28,10 +28,8 @@
 4.  Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
     When we visit a site while performing tests with cypress, the framework picks up on some additional information like XHR logs and can detect some errors on loading which is particularly useful for developers. In the Cypress App executed cypress commands are written in bold text. - Tests can be run in different browsers and selecting a browser is very simple by using the Cypress App.
     ![Browser selection in Cypress App](./cypress/fixtures/readme-images/browser-selection.png) - **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
-
-            ```
-            specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
-            ```
+    `        specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
+       `
 
     The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block.
 
@@ -81,10 +79,10 @@ To be able to use Cypress commands it is necessary to specify the file will be r
 
 -   Sometimes an element is visible in the DOM but can not be accessed because of a certain setting. In this case, certain options need to be passed together with the click command. If an element is not accessible the **force** option is used which forces the action and disables the waiting for actionability property: `cy.get('textarea.feedback-input').type('Enter comment here', {force:true})`.
 
--   In the script **cypress/e2e/add-recipe.js** a test suite is written for testing the **Add Recipe** feature of the demo app.
+-   In the script **cypress/e2e/search-recipe.js** a test suite is written for testing the **Search** feature of the demo app.
 
-    -   The first test describes a happy path where all data is entered in the correct format. After uploading entered data corresponding message of successful recipe upload is displayed.
-    -   The next two tests describe unhappy paths where not all data is entered and data is entered in invalid format. In the first case, user is notified about missing data and in the second a message is displayed stating that format used to enter ingredient data is invalid.
+    -   The first test describes a happy path where a list of recipe previews is shown in the search results area of the page.
+    -   The second test describes an unhappy path where a search when query text **yellow** is entered gives no results. Corresponding message is also displayed to the user.
 
 -   **Note**: By using the \*\*only\*\* command Mocha is directed to execute only that test. To execute all test cases in test suite, remove **only** after **it()** command in the first test of the suite.
 
@@ -92,11 +90,19 @@ To be able to use Cypress commands it is necessary to specify the file will be r
 
 To easily define correct selectors Chrome plugin **Ranorex celocity** can be added to the browser. When using Ranorex Celocity in Chrome, an element can be selected using the **select element** tool (right-click -> inspect) and inspecting the element a type or attribute can be used, like so: `a > ul`. This means that an unordered list element will be selected that is embedded in an anchor element. In the Forkify app, `div > h4` can be used to select all recipes that appear in search results. After that, several selector options are offered in the **List of selectors** area. To select a specific heading of a recipe in search results, following XPath: `(//h4[text()="Mediterranean Chickpea Salad"])` can be used.
 
-![Using Ranorex Celocity addon in Chrome](./cypress/fixtures/readme-images/ranorex-celocity.png) - **Note**: it is highly advisable to add custom attributes (like name, id, specific class and so on) when creating web elements so they are easily accessed when testing.
+![Using Ranorex Celocity addon in Chrome](./cypress/fixtures/readme-images/ranorex-celocity.png)
+
+-   **Note**: it is highly advisable to add custom attributes (like name, id, specific class and so on) when creating web elements so they are easily accessed when testing.
 
 -   A **class selector** is a name preceded by a full stop (“.”), example: **.subcategories**.
 -   An **ID selector** is a name preceded by the hash character (“#”), example **#homepageHeader**. This is a typical CSS selector. Documentation on CSS selectors: [https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and here [https://www.tutorialspoint.com/xpath/index.htm](https://www.tutorialspoint.com/xpath/index.htm).
     -   **Note**: While ID is used to identify only one element, a class can be used to identify more than one element. A combination of these selectors can also be used, as shown in example above: `'#contact-us > .thumbnail'`. This way, a child element, with class attribute ".thumbnail", of of the element with id "contact-us" is selected.
 -   **XPath** selectors. Full documentation can be found here [https://www.w3schools.com/xml/xpath_syntax.asp](https://www.w3schools.com/xml/xpath_syntax.asp). These selectors usually start with **//** which means they are relative and all elements will be selected no matter where they are in the document. For absolute XPath **/** is used and elements are selected starting from the root of the document. The star symbol (**\***) represents a wild card. The **@** symbol is used to access an attribute: `//input[@id="quantity"]`. - An XPath expression often contains functions, like for example the string function **text()**: `//p[text()="Start by searching for a recipe or an ingredient. Have fun!"]`, **contains()**: `//div[contains(@class,"search")]` or **starts-with()**: `//input[starts-with(@placeholder,"Search")]`.
 -   **XPath Axes** [https://www.w3schools.com/xml/xpath_axes.asp](https://www.w3schools.com/xml/xpath_axes.asp) are also very useful when writing XPath expressions. An axis is used to locate nodes relative to the current node on the tree. Basically, relations between nodes in the DOM tree can be used to select an element, for example: `//input[@id="description"]/following-sibling::textarea`.
-    .
+
+### Example using **XPath** plugin for VS Code
+
+-   In the script **cypress/e2e/add-recipe.js** a test suite is written for testing the **Add Recipe** feature of the demo app.
+
+    -   The first test describes a happy path where all data is entered in the correct format. After uploading entered data corresponding message of successful recipe upload is displayed.
+    -   The next two tests describe unhappy paths where not all data is entered and data is entered in invalid format. In the first case, user is notified about missing data and in the second a message is displayed stating that format used to enter ingredient data is invalid.

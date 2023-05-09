@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 describe("Test recipe search operation", () => {
-    //Happy path test case, results in list of recipes displayed in search-result area after API call made using query text.
+    //Happy path test case, results in list of recipe previews displayed in search-result area after API call made using query text "pasta".
     it.only("Should display search results after keyword input in required field", () => {
         //Open "forkify" site
         cy.visit("https://forkify-k-project.netlify.app/");
