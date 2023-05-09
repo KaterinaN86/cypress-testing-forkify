@@ -28,8 +28,10 @@
 4.  Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
     When we visit a site while performing tests with cypress, the framework picks up on some additional information like XHR logs and can detect some errors on loading which is particularly useful for developers. In the Cypress App executed cypress commands are written in bold text. - Tests can be run in different browsers and selecting a browser is very simple by using the Cypress App.
     ![Browser selection in Cypress App](./cypress/fixtures/readme-images/browser-selection.png) - **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
-    `        specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
-       `
+
+    ```
+    specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
+    ```
 
     The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block.
 
@@ -62,7 +64,13 @@
 
 ## Basic Cypress commands
 
-To be able to use Cypress commands it is necessary to specify the file will be referencing Cypress: `/// <reference types="Cypress" />`. After adding reference, Visual Studio Code enables easy access to all Cypress commands used to write tests, like **get()** for accessing DOM elements by using selectors or **visit()** for accessing a specific URL.
+To be able to use Cypress commands it is necessary to specify the file will be referencing Cypress:
+
+```
+/// <reference types="Cypress" />
+```
+
+After adding reference, Visual Studio Code enables easy access to all Cypress commands used to write tests, like **get()** for accessing DOM elements by using selectors or **visit()** for accessing a specific URL.
 
 ![Using Cypress commands](./cypress/fixtures/readme-images/cypress-commands.png)
 
