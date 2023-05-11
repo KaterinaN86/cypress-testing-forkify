@@ -1,12 +1,13 @@
 /// <reference types="Cypress" />
 describe("Test Add recipe form", () => {
     //Happy path scenario where all data is entered in expected format
-    it.only("Should be able to successfully upload recipe after correctly filling in required data.", () => {
-        //Open "forkify" site
+    it("Should be able to successfully upload recipe after correctly filling in required data.", () => {
+        //Open "forkify" site.
         cy.visit("https://forkify-k-project.netlify.app/");
-        //Click on add recipe button
-        cy.get(".nav__btn--add-recipe").click();
-        //Enter Recipe Data
+        //Click on add recipe button.
+        //Using dynamic CSS selector to select add recipe button element (selecting button with class attribute ending in "add-recipe").
+        cy.get("button[class$='add-recipe']").click();
+        //Enter Recipe Data.
         cy.get('[placeholder="* Enter recipe title"]').type(
             "Mediterranean Chickpea Salad"
         );
@@ -82,14 +83,15 @@ describe("Test Add recipe form", () => {
         cy.get(".btn--submit").click();
         //Upload recipe
         cy.get(".upload__btn").click();
+        cy.get("#smile-message-img");
     });
-    //Unhappy path scenario where servings number is missing
+    //Unhappy path scenario where servings number is missing.
     it("Should not be able to successfully upload recipe missing servings data.", () => {
-        //Open "forkify" site
+        //Open "forkify" site.
         cy.visit("https://forkify-k-project.netlify.app/");
-        //Click on add recipe button
-        cy.get(".nav__btn--add-recipe").click();
-        //Enter Recipe Data
+        //Click on add recipe button.
+        cy.get("button[class$='add-recipe']").click();
+        //Enter Recipe Data.
         cy.get('[placeholder="* Enter recipe title"]').type(
             "Wax Beans With Mint"
         );
@@ -137,10 +139,10 @@ describe("Test Add recipe form", () => {
     });
     //Unhappy path scenario where wrong format is used when filling in ingredient data.
     it("Should get message 'Wrong ingredient format! Please use correct format :)' when submitting ingredient data.", () => {
-        //Open "forkify" site
+        //Open "forkify" site.
         cy.visit("https://forkify-k-project.netlify.app/");
-        //Click on add recipe button
-        cy.get(".nav__btn--add-recipe").click();
+        //Click on add recipe button.
+        cy.get("button[class$='add-recipe']").click();
         //Enter Recipe Data
         cy.get('[placeholder="* Enter recipe title"]').type(
             "Wax Beans With Mint"
@@ -176,7 +178,24 @@ describe("Test Add recipe form", () => {
         cy.xpath('//input[@id="unit"]').type("tablespoons");
         cy.xpath('//input[@id="description"]').type("olive oil");
         cy.get(".btn--submit").click();
-        //Upload recipe
+        //Upload recipe.
         cy.get(".upload__btn").click();
+    });
+    //Describes happy path for deleting last uploaded user recipe from database to avoid redundant data.
+    it("Should delete last uploaded user recipe", () => {
+        //Open "forkify" site.
+        cy.visit("https://forkify-k-project.netlify.app/");
+        //Enter query text "salad" in search input text field.
+        cy.xpath('//form[@class="search"]/child::input').type("MEDITERRANEAN");
+        //Click "search" button.
+        cy.get('button[class$="search__btn"]').click();
+        //Click on recipe preview in results list whose use-generated data is not hidden. If recipe is not uploaded by user, div class attribute will end in "hidden".
+        cy.xpath(
+            '//ul[@class="results"]//div[@class="preview__user-generated "][1]'
+        ).click();
+        //Click on delete button in detailed recipe view.
+        cy.xpath('//button[contains(@class,"recipe__delete")]').click();
+        //With for message after deleting.
+        cy.get("#error-message-p-element");
     });
 });
