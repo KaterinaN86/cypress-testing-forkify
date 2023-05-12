@@ -26,8 +26,14 @@
     -   **Note:** Installed version matches one used in Udemy tutorial [https://www.udemy.com/course/cypress-io-master-class](https://www.udemy.com/course/cypress-io-master-class).
 
 4.  Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
-    When we visit a site while performing tests with cypress, the framework picks up on some additional information like XHR logs and can detect some errors on loading which is particularly useful for developers. In the Cypress App executed cypress commands are written in bold text. - Tests can be run in different browsers and selecting a browser is very simple by using the Cypress App.
-    ![Browser selection in Cypress App](./cypress/fixtures/readme-images/browser-selection.png) - **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
+
+    -   In the **package.json** file commands for starting Cypress can be added by adding this line to the scripts section: `"cypress:open": "cypress open"`. This way, Cypress can be started by simply writing: `npm run cypress:open` in the Bash terminal.
+
+    -   When we visit a site while performing tests with cypress, the framework picks up on some additional information like XHR logs and can detect some errors on loading which is particularly useful for developers. In the Cypress App executed cypress commands are written in bold text. - Tests can be run in different browsers and selecting a browser is very simple by using the Cypress App.
+
+    ![Browser selection in Cypress App](./cypress/fixtures/readme-images/browser-selection.png)
+
+    -   **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
 
     ```
     specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
@@ -46,10 +52,16 @@
 
     ![Overwriting settings in the cypress.config.js file](./cypress/fixtures/readme-images/config-overwriting.png)
 
+As shown in the image above, the baseURL of the application under test can also be defined in this file, by adding line:
+
+```
+baseUrl: "https://forkify-k-project.netlify.app/"
+```
+
 -   Following execution, **json reports** can be saved in the **results** directory.
 -   In the **screenshots** directory images of executed tests are stored.
 
-    -   **Note**: to achieve this Cyperss method **screenshot()** needs to be used on a specific element. After the test is successfully executed, screenshot of the selected element can be found in the **screenshots** directory:
+    -   **Note**: to achieve this Cypress method **screenshot()** needs to be used on a specific element. After the test is successfully executed, screenshot of the selected element can be found in the **screenshots** directory:
 
     ![Path of screenshots directory](./cypress/fixtures/readme-images/screenshots-dir.png)
 

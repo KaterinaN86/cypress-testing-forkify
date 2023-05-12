@@ -3,7 +3,7 @@ describe("Test Add recipe form", () => {
     //Happy path scenario where all data is entered in expected format
     it("Should be able to successfully upload recipe after correctly filling in required data.", () => {
         //Open "forkify" site.
-        cy.visit("https://forkify-k-project.netlify.app/");
+        cy.visit("/");
         //Click on add recipe button.
         //Using dynamic CSS selector to select add recipe button element (selecting button with class attribute ending in "add-recipe").
         cy.get("button[class$='add-recipe']").click();
@@ -191,8 +191,10 @@ describe("Test Add recipe form", () => {
         cy.get('button[class$="search__btn"]').click();
         //Click on recipe preview in results list whose use-generated data is not hidden. If recipe is not uploaded by user, div class attribute will end in "hidden".
         cy.xpath(
-            '//ul[@class="results"]//div[@class="preview__user-generated "][1]'
-        ).click();
+            '//ul[@class="results"]//div[@class="preview__user-generated "]'
+        )
+            .first()
+            .click();
         //Click on delete button in detailed recipe view.
         cy.xpath('//button[contains(@class,"recipe__delete")]').click();
         //With for message after deleting.

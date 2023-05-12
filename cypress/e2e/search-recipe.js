@@ -3,7 +3,7 @@ describe("Test recipe search operation", () => {
     //Happy path test case, results in list of recipe previews displayed in search-result area after API call made using query text "pasta".
     it.only("Should display search results after keyword input in required field", () => {
         //Open "forkify" site
-        cy.visit("https://forkify-k-project.netlify.app/");
+        cy.visit("/");
         //Select text input field for recipe search. Input query text in recipe search field.
         cy.get(".search__field").type("pasta");
         //Click search button.
