@@ -132,3 +132,10 @@ To easily define correct selectors Chrome plugin **Ranorex celocity** can be add
     -   The first test describes a happy path where all data is entered in the correct format. After uploading entered data corresponding message of successful recipe upload is displayed.
     -   The next two tests describe unhappy paths where not all data is entered and data is entered in invalid format. In the first case, user is notified about missing data and in the second a message is displayed stating that format used to enter ingredient data is invalid.
     -   The last tests case describes a happy path for deleting the recipe the user has entered. This test case is added to avoid duplicate data anytime the suite is executed.
+
+## Page Object Model Pattern in Cypress (example)
+
+Page Object Model is a design pattern in the automation world which has been famous for its **easy maintenance** approach and **avoiding code duplication**. A page object is a class that represents a page in the web application. Under this model, the overall web application breaks down into logical pages. Each page of the web application generally corresponds to one class, but can even map to multiple classes also, depending on the classification of the pages. This Page class will contain all the locators of the WebElements of that web page and will also contain methods that can perform operations on those WebElements.
+
+-   In the **cypress/pages** directory, two example classes are included: **HomePage** and **Recipe**.
+-   The tests using these classes (pages) are: **testHomePage.js** and **testRecipeView.js**.

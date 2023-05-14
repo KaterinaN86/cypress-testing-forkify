@@ -1,5 +1,9 @@
 {
-  "name": "Using fixtures to represent data",
-  "email": "hello@cypress.io",
-  "body": "Fixtures are a great way to mock data for responses to routes"
+    "name": "Using fixtures to represent data",
+    "email": "hello@cypress.io",
+    "body": "Fixtures are a great way to mock data for responses to routes",
+    "pageTitle": "Forkify app with additional features",
+    "URL": "https://forkify-k-project.netlify.app/",
+    "contentType": "text/html",
+    "charset": "UTF-8"
 }
