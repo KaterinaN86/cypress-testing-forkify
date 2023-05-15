@@ -139,3 +139,5 @@ Page Object Model is a design pattern in the automation world which has been fam
 
 -   In the **cypress/pages** directory, two example classes are included: **HomePage** and **Recipe**.
 -   The tests using these classes (pages) are: **testHomePage.js** and **testRecipeView.js**.
+
+    -   **Note**: test suite described in **testHomePage.js** contains **Cypress Hooks** which are constructs used for performing a particular set of actions just before/after each test case or before/after all the test cases in the test suite. In the same suite there are tests referencing windows by using commands like: `cy.document().should("have.property", "charset").and("eq", "UTF-8");`. Cypress **fixture** 'cypress/fixtures/example.json' is also used to store test data in **JSON** format, that is referenced in the tests enabling data-driven testing (same test can be performed several times using different tests of data, giving varying results).

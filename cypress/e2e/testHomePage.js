@@ -9,6 +9,7 @@ describe("Test home page", () => {
             globalThis.data = data;
         });
     });
+    //Cypress hook used to call a function before each test is executed.
     beforeEach(function () {
         // runs before each test in the it block
         cy.log("Open base URL");
@@ -16,14 +17,17 @@ describe("Test home page", () => {
     });
     it("Should verify base URL", () => {
         cy.log("Verifying base URL");
+        //Accessing URL of the page that is currently active and verifying it using fixture.
         cy.url().should("eq", data.URL);
     });
     it("Should verify page title", () => {
         cy.log("Verifying page title.");
+        //Accessing document.title property of the page that is currently active.
         cy.title().should("include", data.pageTitle);
     });
     it("Should verify charset document property", () => {
         cy.log("Verifying document charset property");
+        //Accessing window document object and verifying charset property.
         cy.document().should("have.property", "charset").and("eq", "UTF-8");
     });
     it("Should verify main container is displayed", () => {
