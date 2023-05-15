@@ -7,8 +7,8 @@ describe("Test recipe details view", () => {
     //Cypress hook that refers to a function being called before executing test suite.
     before(function () {
         //Use the cy.fixture() method to pull data from fixture file
-        cy.fixture("app-data").then(function (data) {
-            this.data = data;
+        cy.fixture("example").then(function (data) {
+            globalThis.data = data;
         });
     });
     beforeEach(function () {
@@ -22,7 +22,8 @@ describe("Test recipe details view", () => {
     it("Should verify message text is displayed", () => {
         recipe.verifyMessageElementExists();
     });
-    it("Should print recipe view message", () => {
+    it("Should print and verify recipe view message", () => {
         recipe.verifyMessageText();
+        cy.log("Recipe view message verified!");
     });
 });
