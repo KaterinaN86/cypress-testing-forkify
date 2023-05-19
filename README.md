@@ -175,7 +175,7 @@ cy.get('form').within(($form) => {
 })
 ```
 
-You can wrap promises returned by the application code. Cypress commands will automatically wait for the promise to resolve before continuing with the yielded value to the next command or assertion. See the [https://docs.cypress.io/examples/recipes#Logging-In] (Logging in using application code recipe) for the full example.
+You can wrap promises returned by the application code. Cypress commands will automatically wait for the promise to resolve before continuing with the yielded value to the next command or assertion. See [https://docs.cypress.io/examples/recipes#Logging-In](https://docs.cypress.io/examples/recipes#Logging-In) for the full example.
 
 ```
 const myPromise = new Promise((resolve, reject) => {
