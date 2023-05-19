@@ -17,13 +17,10 @@ describe("Test search form", () => {
         cy.visit("/");
     });
     it("Should verify search button", () => {
-        cy.log("Verifying search button");
         search.verifySearchButton();
     });
     it("Should enter query text", () => {
-        cy.log("Verifying search");
         search.inputSearchQuery("pasta");
-        cy.log("Click on search button.");
         search.clickSearchButton();
     });
 });

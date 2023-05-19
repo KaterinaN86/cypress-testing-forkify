@@ -149,6 +149,83 @@ Page Object Model is a design pattern in the automation world which has been fam
 
     Cypress **fixture** `cypress/fixtures/example.json` ([https://docs.cypress.io/api/commands/fixture#Syntax](https://docs.cypress.io/api/commands/fixture#Syntax)) is also used to store test data in **JSON** format, that is referenced in the tests enabling data-driven testing (same test can be performed several times using different tests of data, giving varying results).
 
-## Promises in Cypress
+## Promises in Cypress and the **wrap()** method.
 
 Cypress runs asynchronously and promises are handled in the background. However, when the order of executions needs to be defined explicitly, **then()** can be used to handle promises. This topic is explained in detail here [https://docs.cypress.io/guides/core-concepts/introduction-to-cypress#Subject-Management](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress#Subject-Management).
+
+-   **Note**: Class **cypress/pages/Search.js** contains a method that has an example of using **then()** method to handle a promise and control order of execution.
+
+Cypress **wrap()** method is also often used to handle promisers, more precisely it is used to yield the object passed into 'wrap()'. If the object is a promise, it will yield its resolved value. It can be used with objects:
+
+```
+//Invoke the function on the subject in wrap and return the new value
+const getName = () => {
+  return 'Jane Lane'
+}
+cy.wrap({ name: getName }).invoke('name').should('eq', 'Jane Lane') // true
+```
+
+and also to wrap elements to continue the commands chain of execution:
+
+```
+cy.get('form').within(($form) => {
+  // ... more commands
+
+  cy.wrap($form).should('have.class', 'form-container')
+})
+```
+
+You can wrap promises returned by the application code. Cypress commands will automatically wait for the promise to resolve before continuing with the yielded value to the next command or assertion. See the [https://docs.cypress.io/examples/recipes#Logging-In] (Logging in using application code recipe) for the full example.
+
+```
+const myPromise = new Promise((resolve, reject) => {
+  // we use setTimeout(...) to simulate async code.
+  setTimeout(() => {
+    resolve({
+      type: 'success',
+      message: 'It worked!',
+    })
+  }, 2500)
+})
+
+it('should wait for promises to resolve', () => {
+  cy.wrap(myPromise).its('message').should('eq', 'It worked!')
+})
+```
+
+## Invoke and alias
+
+Invoke a function on the previously yielded subject.
+
+If you want to get a property that is not a function on the previously yielded subject, use .its().
+
+If you chain further commands off of .invoke(), it will be called multiple times. If you only want the method to be called once, end your chain with .invoke() and start fresh with cy afterwards.
+
+```
+cy.get('.input').invoke('val').should('eq', 'foo') // Invoke the 'val' function
+cy.get('.modal').invoke('show') // Invoke the jQuery 'show' function
+cy.wrap({ animate: fn }).invoke('animate') // Invoke the 'animate' function
+```
+
+-   In this first example a function **fn** is declared. Cypress method **wrap()** is then used to enable chaining. The invoke method yields the result of **foo** (which is a wrapper for **fn**) and at the end an assertion is made to confirm the result equals **bar**.
+
+```
+const fn = () => {
+  return 'bar'
+}
+
+cy.wrap({ foo: fn }).invoke('foo').should('eq', 'bar') // true
+```
+
+-   Invoke can also be used with properties that are also functions:
+
+```
+cy.get('div.container')
+  .should('be.hidden') // element is hidden
+  .invoke('show') // call jquery method 'show' on the '.container'
+  .should('be.visible') // element is visible now
+  .find('input') // drill down into a child "input" element
+  .type('Cypress is great') // and type text
+```
+
+-   **Note**: see **e2e/examples/alias-invoke.js** for more examples.

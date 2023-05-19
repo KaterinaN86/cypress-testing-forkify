@@ -26,4 +26,7 @@ describe("Test recipe details view", () => {
         recipe.verifyMessageText();
         cy.log("Recipe view message verified!");
     });
+    it("Should log message text in recipe details view and should verify length is grater than 5", () => {
+        recipe.getMessageText();
+    });
 });

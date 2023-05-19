@@ -15,7 +15,9 @@ class Search {
         cy.log("Search button verified");
     }
     clickSearchButton() {
+        cy.log("Click on search button.");
         this.getSearchButton().click();
+        //Example of handling a promise so we can control order of execution.
         this.getSearchButton().then(($searchButton) => {
             console.log(`Clicked on button with text: ${$searchButton.text()}`);
         });
