@@ -137,8 +137,8 @@ To easily define correct selectors Chrome plugin **Ranorex celocity** can be add
 
 Page Object Model is a design pattern in the automation world which has been famous for its **easy maintenance** approach and **avoiding code duplication**. A page object is a class that represents a page in the web application. Under this model, the overall web application breaks down into logical pages. Each page of the web application generally corresponds to one class, but can even map to multiple classes also, depending on the classification of the pages. This Page class will contain all the locators of the WebElements of that web page and will also contain methods that can perform operations on those WebElements.
 
--   In the **cypress/pages** directory, example classes: **HomePage**, **Header**, **Recipe**, **Search** are included.
--   The tests using these classes (pages) are: **testHeader**, **testSearch**, **testHomePage.js** and **testRecipeView.js** correspondingly.
+-   In the **cypress/pages** directory, example classes: **HomePage**, **Header**, **Recipe**, **Search**, **SearchResults** are included.
+-   The tests using these classes (pages) are: **testHeader**, **testSearch**, **testHomePage.js**, **testRecipeView.js** and **testSearchResults** correspondingly.
 
     -   **Note**: some test suites contain **Cypress Hooks** ([https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks)) which are constructs used for performing a particular set of actions just **before/after each test case** or **before/after all the test cases** in the test suite. \
         In the same suite there are tests referencing windows by using commands like:

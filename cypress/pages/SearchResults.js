@@ -5,6 +5,7 @@ class SearchResults {
     getRecipes() {
         return cy.xpath("//ul[@class='results']").find(".preview");
     }
+
     verifyMainContainer() {
         expect(this.getMainContainer()).to.exist;
     }
@@ -16,7 +17,15 @@ class SearchResults {
     }
     verifyRecipesListPageLength() {
         cy.log("Logging number of displayed recipe previews on first page.");
-        cy.log(this.getRecipes().its("length"));
+        cy.log(this.getNumberOfPreviews());
+    }
+    clickRandomRecipePreview() {
+        cy.log("Click on random recipe preview from search results.");
+        const randomIndex = Math.floor(
+            Math.random() * this.getNumberOfPreviews()
+        );
+        cy.log(this.maxIndex);
+        cy.log(randomIndex);
     }
 }
 module.exports = new SearchResults();

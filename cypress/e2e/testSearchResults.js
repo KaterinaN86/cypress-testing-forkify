@@ -4,6 +4,7 @@ import searchResutls from "../pages/SearchResults.js";
 import search from "../pages/Search.js";
 
 describe("Test search form", () => {
+    let length;
     //Cypress hook that refers to a function being called before executing test suite.
     before(function () {
         //Use the cy.fixture() method to pull data from fixture file
@@ -26,7 +27,14 @@ describe("Test search form", () => {
         search.inputSearchQuery("potato");
         search.clickSearchButton();
         searchResutls.verifyRecipesList();
+        searchResutls.getRecipes().then(($list) => {
+            length = $list.length;
+        });
 
-        searchResutls.verifyRecipesListPageLength();
+        //searchResutls.verifyRecipesListPageLength();
+        //searchResutls.clickRandomRecipePreview();
+    });
+    it("Printing length", () => {
+        cy.log("*** length obtained is *** " + length);
     });
 });
