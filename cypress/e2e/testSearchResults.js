@@ -1,10 +1,11 @@
 /// <reference types="Cypress" />
 
-import searchResutls from "../pages/SearchResults.js";
+import searchResutls, {
+    clickRandomRecipePreview,
+} from "../pages/SearchResults.js";
 import search from "../pages/Search.js";
 
 describe("Test search form", () => {
-    let length;
     //Cypress hook that refers to a function being called before executing test suite.
     before(function () {
         //Use the cy.fixture() method to pull data from fixture file
@@ -23,18 +24,15 @@ describe("Test search form", () => {
         searchResutls.verifyMainContainer();
     });
 
-    it("Should log recipes list length", () => {
-        search.inputSearchQuery("potato");
+    it("Should log current page number and click on random recipe", () => {
+        search.inputSearchQuery(data.secondSearchQuery);
         search.clickSearchButton();
-        searchResutls.verifyRecipesList();
-        searchResutls.getRecipes().then(($list) => {
-            length = $list.length;
+        searchResutls.getPageInfo().then(($textValue) => {
+            let textArray = $textValue.split(" ");
+            let currentPageNum = textArray[1];
+            cy.log("Current page is " + currentPageNum);
         });
-
-        //searchResutls.verifyRecipesListPageLength();
-        //searchResutls.clickRandomRecipePreview();
-    });
-    it("Printing length", () => {
-        cy.log("*** length obtained is *** " + length);
+        cy.log("Click on random recipe preview.");
+        searchResutls.clickRandomRecipePreview();
     });
 });

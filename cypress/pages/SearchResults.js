@@ -15,17 +15,17 @@ class SearchResults {
         );
         expect(this.getRecipes()).to.exist;
     }
-    verifyRecipesListPageLength() {
-        cy.log("Logging number of displayed recipe previews on first page.");
-        cy.log(this.getNumberOfPreviews());
+    getPageInfo() {
+        return cy.xpath("//div[contains(@class,'btn--page')]").invoke("text");
     }
+
     clickRandomRecipePreview() {
         cy.log("Click on random recipe preview from search results.");
-        const randomIndex = Math.floor(
-            Math.random() * this.getNumberOfPreviews()
-        );
-        cy.log(this.maxIndex);
-        cy.log(randomIndex);
+        this.getRecipes().then(($list) => {
+            const randomIndex = Math.round(Math.random() * $list.length);
+            cy.log("Generated index: " + randomIndex);
+            cy.wrap($list[randomIndex]).click();
+        });
     }
 }
 module.exports = new SearchResults();
