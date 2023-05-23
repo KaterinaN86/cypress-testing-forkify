@@ -27,5 +27,13 @@ class SearchResults {
             cy.wrap($list[randomIndex]).click();
         });
     }
+
+    getCurrentPageInfo() {
+        this.getPageInfo().then(($textValue) => {
+            let textArray = $textValue.split(" ");
+            let currentPageNum = textArray[1];
+            cy.log("Current page is " + currentPageNum);
+        });
+    }
 }
 module.exports = new SearchResults();

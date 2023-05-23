@@ -5,7 +5,11 @@ class Recipe {
     }
 
     getMessageElement() {
-        return cy.xpath('//p[@id="message-text"]');
+        return cy.get("#message-text");
+    }
+
+    getDirectionsButton() {
+        return cy.get(".recipe__btn");
     }
 
     verifyMessageContainerExists() {
@@ -33,6 +37,33 @@ class Recipe {
     getMessageText() {
         this.getMessageElement().invoke("text").as("messageText");
         cy.get("@messageText").its("length").should("be.gt", 5);
+    }
+
+    verifyDirectionsButton() {
+        cy.log("Verifying directions button");
+        this.getDirectionsButton()
+            .should("have.attr", "target", "_blank")
+            .children()
+            .filter("span")
+            .should("have.text", "Directions");
+    }
+    clickDirectionsButton() {
+        cy.log("Click on 'Directions' button.");
+        this.getDirectionsButton().invoke("removeAttr", "target").forceClick();
+        cy.go("back");
+    }
+
+    handleUncaughtException() {
+        // this event will automatically be unbound when this
+        // test ends because it's attached to 'cy'
+        cy.on("uncaught:exception", (err, runnable) => {
+            expect(err.message).to.include(
+                "Cannot read properties of null (reading 'postMessage')"
+            );
+            // return false to prevent the error from
+            // failing this test
+            return false;
+        });
     }
 }
 module.exports = new Recipe();

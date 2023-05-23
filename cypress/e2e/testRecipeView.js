@@ -2,6 +2,8 @@
 
 import homePage from "../pages/HomePage.js";
 import recipe from "../pages/Recipe.js";
+import search from "../pages/Search.js";
+import searchResults from "../pages/SearchResults.js";
 
 describe("Test recipe details view", () => {
     //Cypress hook that refers to a function being called before executing test suite.
@@ -28,5 +30,15 @@ describe("Test recipe details view", () => {
     });
     it("Should log message text in recipe details view and should verify length is grater than 5", () => {
         recipe.getMessageText();
+    });
+    it("Should click on random recipe preview after performed search", () => {
+        search.inputSearchQuery(data.searchQuery);
+        search.clickSearchButton();
+        searchResults.getCurrentPageInfo();
+        cy.log("Click on random recipe preview.");
+        searchResults.clickRandomRecipePreview();
+        recipe.verifyDirectionsButton();
+        recipe.handleUncaughtException();
+        recipe.clickDirectionsButton();
     });
 });

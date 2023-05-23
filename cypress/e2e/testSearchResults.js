@@ -1,8 +1,6 @@
 /// <reference types="Cypress" />
 
-import searchResutls, {
-    clickRandomRecipePreview,
-} from "../pages/SearchResults.js";
+import searchResutls from "../pages/SearchResults.js";
 import search from "../pages/Search.js";
 
 describe("Test search form", () => {
@@ -27,11 +25,7 @@ describe("Test search form", () => {
     it("Should log current page number and click on random recipe", () => {
         search.inputSearchQuery(data.secondSearchQuery);
         search.clickSearchButton();
-        searchResutls.getPageInfo().then(($textValue) => {
-            let textArray = $textValue.split(" ");
-            let currentPageNum = textArray[1];
-            cy.log("Current page is " + currentPageNum);
-        });
+        searchResutls.getCurrentPageInfo();
         cy.log("Click on random recipe preview.");
         searchResutls.clickRandomRecipePreview();
     });

@@ -8,5 +8,7 @@ module.exports = defineConfig({
         specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx,feature}",
         screenshotOnRunFailure: true,
         baseUrl: "https://forkify-k-project.netlify.app/",
+        chromeWebSecurity: false,
+        experimentalModifyObstructiveThirdPartyCode: true,
     },
 });

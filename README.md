@@ -104,7 +104,7 @@ After adding reference, Visual Studio Code enables easy access to all Cypress co
     -   The first test describes a happy path where a list of recipe previews is shown in the search results area of the page.
     -   The second test describes an unhappy path where a search when query text **yellow** is entered gives no results. Corresponding message is also displayed to the user.
 
--   **Note**: By using the \*\*only\*\* command Mocha is directed to execute only that test. To execute all test cases in test suite, remove **only** after **it()** command in the first test of the suite.
+-   **Note**: By using the \*\*only\*\* command Mocha is directed to execute only that test. To execute all test cases in test suite, remove **only** after **it()** command in the first test of the suite. The **skip** commands will cause Cypress to ignore that test case.
 
 ### Selectors
 
@@ -153,7 +153,7 @@ Page Object Model is a design pattern in the automation world which has been fam
 
 Cypress runs asynchronously and promises are handled in the background. However, when the order of executions needs to be defined explicitly, **then()** can be used to handle promises. This topic is explained in detail here [https://docs.cypress.io/guides/core-concepts/introduction-to-cypress#Subject-Management](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress#Subject-Management).
 
--   **Note**: Class **cypress/pages/Search.js** contains a method that has an example of using **then()** method to handle a promise and control order of execution.
+-   **Note**: Class **cypress/pages/Search.js** contains a method that has an example of using **then()** method to handle a promise and control order of execution. Class **cypress/pages/SearchResults.js** contains examples of using promises to access values like the length of the yielded list of elements abd methods that clicks on a random element of the yielded list, that also requires using the **then()**method.
 
 Cypress **wrap()** method is also often used to handle promisers, more precisely it is used to yield the object passed into 'wrap()'. If the object is a promise, it will yield its resolved value. It can be used with objects:
 
@@ -229,3 +229,60 @@ cy.get('div.container')
 ```
 
 -   **Note**: see **e2e/examples/alias-invoke.js** for more examples.
+
+## Cypress limitations
+
+Cypress changes its own host URL to match that of your applications. With the exception of cy.origin, Cypress requires that the URLs navigated to have the same superdomain for the entirety of a single test.
+
+If you attempt to visit two different superdomains, the cy.origin command must be used to wrap Cypress commands of the second visited domain. Otherwise, Cypress commands will timeout after the navigation and will eventually error. This is because the commands that were expected to run on the second domain are actually being run on the first domain.
+
+-   **Note: ** set these properties in the **e2e** block of the **cypress.config.js** file:
+
+```
+chromeWebSecurity: false,
+experimentalModifyObstructiveThirdPartyCode: true
+```
+
+When clicking on a link element that leads to another superdomain the **target** attribute can be removed and the test will pass: `this.getDirectionsButton().invoke("removeAttr", "target").click()`. The **origin** command has also been added in order to be able to write tests that can access more than one URL with different origin [https://docs.cypress.io/api/commands/origin#Syntax](https://docs.cypress.io/api/commands/origin#Syntax).
+In conclusion, if a link for accessing a different URL is available, it can be accessed by removing the target attribute. Otherwise, the cy.origin command can be used:
+
+```
+    it('Origin command', () => {
+       cy.origin('webdriveruniversity.com', () => {
+           cy.visit("/");
+       })
+
+       cy.origin('automationteststore.com', () => {
+           cy.visit("/");
+       })
+
+```
+
+## Handling alerts
+
+Cypress automatically handles alerts, however events can still be handled to add logic to our tests [https://docs.cypress.io/api/cypress-api/catalog-of-events#Event-Types](https://docs.cypress.io/api/cypress-api/catalog-of-events#Event-Types).
+
+-   Example for manually handling an alert:
+
+```
+        cy.on('window:alert', (str) => {
+            expect(str).to.equal('I am an alert box!')
+        })
+```
+
+-   **Note**: If there is a need to manually confirm od cancel an alert, event **window:confirm** is used as it provides the possibility of returning **false** when using the **then()** method to handle the event.
+-   Handling events is also very useful for handling uncaught exceptions. An example can be found in the **cypress/pages/Recipe.js** class where method **handleUncaughtException()** is defined.
+-   Alerts can also be handled by using a **stub**, as shown in \*\*cypress/e2e/examples/alerts/alerts-challenge.js\*\* [https://docs.cypress.io/api/commands/stub#Syntax](https://docs.cypress.io/api/commands/stub#Syntax)
+
+## Mouse actions
+
+-   An example can be found in script: **cypress/e2e/examples/mouse-actions.js**. In the example, mouse actions are performed by using the **trigger()** method [https://docs.cypress.io/api/commands/trigger#Syntax](https://docs.cypress.io/api/commands/trigger#Syntax). Most commonly used mouse actions include:
+
+    1.  Scroll into view
+    2.  Drag & Drop
+    3.  Double click
+    4.  Click and hold
+
+## DOM traversal
+
+-   List of Cypress methods most commonly used to traverse elements in the DOM
