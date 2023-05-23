@@ -285,4 +285,8 @@ Cypress automatically handles alerts, however events can still be handled to add
 
 ## DOM traversal
 
--   List of Cypress methods most commonly used to traverse elements in the DOM
+-   An example that demonstrates most commonly used Cypress methods to traverse elements in the DOM can be found in script **cypress/e2e/examples/traversing-elements.js**. These methods are used to access an element based on its position in the DOM tree.
+
+## Working with iframe
+
+Even though Cypress does not provide native access to an embedded iframe (because it is a cross origin frame) elements it is still possible to use a workaround. More on working with embedded iframe can be found in the Cypress documentation [https://docs.cypress.io/guides/guides/web-security#Cross-origin-iframes](https://docs.cypress.io/guides/guides/web-security#Cross-origin-iframes). A workaround where the iframe element is accessed via the **contents()** method and the \<body\> tag can be found in **cypress/e2e/examples/iframe.js**.
