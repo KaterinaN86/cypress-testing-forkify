@@ -104,7 +104,7 @@ After adding reference, Visual Studio Code enables easy access to all Cypress co
     -   The first test describes a happy path where a list of recipe previews is shown in the search results area of the page.
     -   The second test describes an unhappy path where a search when query text **yellow** is entered gives no results. Corresponding message is also displayed to the user.
 
--   **Note**: By using the \*\*only\*\* command Mocha is directed to execute only that test. To execute all test cases in test suite, remove **only** after **it()** command in the first test of the suite. The **skip** commands will cause Cypress to ignore that test case.
+-   **Note**: By using the \*\*only\*\* command Mocha is directed to execute only that test. To execute all test cases in test suite, remove **only** after **it()** command in the first test of the suite. The **skip** commands will cause Cypress to ignore that test case. More about Mocha bundled libraries can be found here [https://docs.cypress.io/guides/references/bundled-libraries#Mocha](https://docs.cypress.io/guides/references/bundled-libraries#Mocha).
 
 ### Selectors
 
@@ -117,7 +117,7 @@ To easily define correct selectors Chrome plugin **Ranorex celocity** can be add
 -   Generated selectors are not robust enough because they often don't use specific attributes for the element that needs to be selected. For example, the following generated selector: `cy.get(".info_links_footer > :nth-child(5) > a")` can easily select the wrong element if the order of elements in the DOM is modified.
 
 -   A **class selector** is a name preceded by a full stop (“.”), example: **.subcategories**.
-    -   **Note**: a class selector is a typical CSS selector. When using CSS selector the **\$** symbol stands for **ends-with** and the **\^** symbol stands for **starts-with**. For example: `a[class^="twitter"]` will select an anchor element with class attribute starting with **twitter** and selector `button[class$="add-recipe"]` will select button element with class attribute ending in **add-recipe**.
+    -   **Note**: a class selector is a typical CSS selector. When using CSS selector the **\$** symbol stands for **ends-with**, the **\^** symbol stands for **starts-with** and the **\*** stands for **contains**. For example: `a[class^="twitter"]` will select an anchor element with class attribute starting with **twitter** and selector `button\[class$="add-recipe"]` will select button element with class attribute ending in **add-recipe** while selector `a[href*='product/category&path=']` selects anchor element with href attribute that contains text **product/category&path=**.
 -   An **ID selector** is a name preceded by the hash character (“#”), example **#homepageHeader**. Documentation on CSS selectors: [https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and here [https://www.tutorialspoint.com/xpath/index.htm](https://www.tutorialspoint.com/xpath/index.htm).
     -   **Note**: While ID is used to identify only one element, a class can be used to identify more than one element. A combination of these selectors can also be used, as shown in example above: `'#contact-us > .thumbnail'`. This way, a child element, with class attribute ".thumbnail", of of the element with id "contact-us" is selected.
 -   **XPath** selectors. Full documentation can be found here [https://www.w3schools.com/xml/xpath_syntax.asp](https://www.w3schools.com/xml/xpath_syntax.asp). These selectors usually start with **//** which means they are relative and all elements will be selected no matter where they are in the document. For absolute XPath **/** is used and elements are selected starting from the root of the document. The star symbol (**\***) represents a wild card. The **@** symbol is used to access an attribute: `//input[@id="quantity"]`. - An XPath expression often contains functions, like for example the string function **text()**: `//p[text()="Start by searching for a recipe or an ingredient. Have fun!"]`, **contains()**: `//div[contains(@class,"search")]` or **starts-with()**: `//input[starts-with(@placeholder,"Search")]`.
@@ -132,19 +132,6 @@ To easily define correct selectors Chrome plugin **Ranorex celocity** can be add
     -   The first test describes a happy path where all data is entered in the correct format. After uploading entered data corresponding message of successful recipe upload is displayed.
     -   The next two tests describe unhappy paths where not all data is entered and data is entered in invalid format. In the first case, user is notified about missing data and in the second a message is displayed stating that format used to enter ingredient data is invalid.
     -   The last tests case describes a happy path for deleting the recipe the user has entered. This test case is added to avoid duplicate data anytime the suite is executed.
-
-## Page Object Model Pattern in Cypress and other practices for more efficient code
-
-Page Object Model is a design pattern in the automation world which has been famous for its **easy maintenance** approach and **avoiding code duplication**. A page object is a class that represents a page in the web application. Under this model, the overall web application breaks down into logical pages. Each page of the web application generally corresponds to one class, but can even map to multiple classes also, depending on the classification of the pages. This Page class will contain all the locators of the WebElements of that web page and will also contain methods that can perform operations on those WebElements.
-
--   In the **cypress/pages** directory, example classes: **HomePage**, **Header**, **Recipe**, **Search**, **SearchResults** are included.
--   The tests using these classes (pages) are: **testHeader**, **testSearch**, **testHomePage.js**, **testRecipeView.js** and **testSearchResults** correspondingly.
-
-### Cypress hooks
-
-Some test suites in this project contain **Cypress Hooks** ([https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks)) which are constructs used for performing a particular set of actions just **before/after each test case** or **before/after all the test cases** in the test suite. Usually when writing Cypress tests resetting the state after a test or test suite is not even necessary. Cypress already automatically enforces test isolation by clearing state before each test. Using **after** and **afterEach** should be done only when necessary to avoid trying to clean up state that is already cleaned up by Cypress automatically. A state cleanup is only required is if the operations that one test runs affect another test downstream. In conclusion, shared code should be run before tests and state cleanup is performed only when absolutely necessary.
-
--   **Note**: When writing tests the state of the application under test should always be taken into consideration. Tests should always be able to be run independently from one another and still pass. So creating tests with chained actions and assertions is better than crating several micro tests. For example, filling out a form, or entering a query and displaying some results is better done in one combined test together with assertions.
 
 ### Referencing windows to perform document assertion
 
@@ -164,9 +151,33 @@ cy.document().should("have.property", "charset").and("eq", "UTF-8");
 });
 ```
 
-### Cypress fixtures
+## Cypress limitations
 
-Cypress **fixture** `cypress/fixtures/example.json` ([https://docs.cypress.io/api/commands/fixture#Syntax](https://docs.cypress.io/api/commands/fixture#Syntax)) is also used to store test data in **JSON** format, that is referenced in the tests enabling data-driven testing (same test can be performed several times using different tests of data, giving varying results).
+Cypress changes its own host URL to match that of your applications. With the exception of cy.origin, Cypress requires that the URLs navigated to have the same superdomain for the entirety of a single test.
+
+If you attempt to visit two different superdomains, the cy.origin command must be used to wrap Cypress commands of the second visited domain. Otherwise, Cypress commands will timeout after the navigation and will eventually error. This is because the commands that were expected to run on the second domain are actually being run on the first domain.
+
+-   **Note: ** set these properties in the **e2e** block of the **cypress.config.js** file:
+
+```
+chromeWebSecurity: false,
+experimentalModifyObstructiveThirdPartyCode: true
+```
+
+When clicking on a link element that leads to another superdomain the **target** attribute can be removed and the test will pass: `this.getDirectionsButton().invoke("removeAttr", "target").click()`. The **origin** command has also been added in order to be able to write tests that can access more than one URL with different origin [https://docs.cypress.io/api/commands/origin#Syntax](https://docs.cypress.io/api/commands/origin#Syntax).
+In conclusion, if a link for accessing a different URL is available, it can be accessed by removing the target attribute. Otherwise, the cy.origin command can be used:
+
+```
+    it('Origin command', () => {
+       cy.origin('webdriveruniversity.com', () => {
+           cy.visit("/");
+       })
+
+       cy.origin('automationteststore.com', () => {
+           cy.visit("/");
+       })
+
+```
 
 ## Promises in Cypress and the **wrap()** method.
 
@@ -249,33 +260,37 @@ cy.get('div.container')
 
 -   **Note**: see **e2e/examples/alias-invoke.js** for more examples.
 
-## Cypress limitations
+## Page Object Model Pattern in Cypress and other practices for more efficient code
 
-Cypress changes its own host URL to match that of your applications. With the exception of cy.origin, Cypress requires that the URLs navigated to have the same superdomain for the entirety of a single test.
+Page Object Model is a design pattern in the automation world which has been famous for its **easy maintenance** approach and **avoiding code duplication**. A page object is a class that represents a page in the web application. Under this model, the overall web application breaks down into logical pages. Each page of the web application generally corresponds to one class, but can even map to multiple classes also, depending on the classification of the pages. This Page class will contain all the locators of the WebElements of that web page and will also contain methods that can perform operations on those WebElements.
 
-If you attempt to visit two different superdomains, the cy.origin command must be used to wrap Cypress commands of the second visited domain. Otherwise, Cypress commands will timeout after the navigation and will eventually error. This is because the commands that were expected to run on the second domain are actually being run on the first domain.
+-   In the **cypress/pages** directory, example classes: **HomePage**, **Header**, **Recipe**, **Search**, **SearchResults** are included.
+-   The tests using these classes (pages) are: **testHeader**, **testSearch**, **testHomePage.js**, **testRecipeView.js** and **testSearchResults** correspondingly.
 
--   **Note: ** set these properties in the **e2e** block of the **cypress.config.js** file:
+### **Cypress hooks**
 
-```
-chromeWebSecurity: false,
-experimentalModifyObstructiveThirdPartyCode: true
-```
+Some test suites in this project contain **Cypress Hooks** ([https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks)) which are constructs used for performing a particular set of actions just **before/after each test case** or **before/after all the test cases** in the test suite. Usually when writing Cypress tests resetting the state after a test or test suite is not even necessary. Cypress already automatically enforces test isolation by clearing state before each test. Using **after** and **afterEach** should be done only when necessary to avoid trying to clean up state that is already cleaned up by Cypress automatically. A state cleanup is only required is if the operations that one test runs affect another test downstream. In conclusion, shared code should be run before tests and state cleanup is performed only when absolutely necessary.
 
-When clicking on a link element that leads to another superdomain the **target** attribute can be removed and the test will pass: `this.getDirectionsButton().invoke("removeAttr", "target").click()`. The **origin** command has also been added in order to be able to write tests that can access more than one URL with different origin [https://docs.cypress.io/api/commands/origin#Syntax](https://docs.cypress.io/api/commands/origin#Syntax).
-In conclusion, if a link for accessing a different URL is available, it can be accessed by removing the target attribute. Otherwise, the cy.origin command can be used:
+-   **Note**: When writing tests the state of the application under test should always be taken into consideration. Tests should always be able to be run independently from one another and still pass. So creating tests with chained actions and assertions is better than crating several micro tests. For example, filling out a form, or entering a query and displaying some results is better done in one combined test together with assertions.
 
-```
-    it('Origin command', () => {
-       cy.origin('webdriveruniversity.com', () => {
-           cy.visit("/");
-       })
+### **Cypress fixtures**
 
-       cy.origin('automationteststore.com', () => {
-           cy.visit("/");
-       })
+Cypress fixtures are used to load a fixed set of data located in a file.
+Cypress **fixture** `cypress/fixtures/example.json` ([https://docs.cypress.io/api/commands/fixture#Syntax](https://docs.cypress.io/api/commands/fixture#Syntax)) is also used to store test data in **JSON** format, that is referenced in the tests enabling data-driven testing (same test can be performed several times using different tests of data, giving varying results).
+
+-   **Note**: A good practice is to use fixtures with Cypress aliases.
+
+### **Cypress custom commands**
+
+Often certain logic needs to be executed several times in a test suite. It's good practice to load that logic in a custom command that can be called multiple times. Custom commands are defined in the \*\*cypress/support/commands.js\*\* file.
 
 ```
+Cypress.Commands.add("forceClick", { prevSubject: "element" }, (element) => {
+    return cy.wrap(element).click({ force: true });
+});
+```
+
+Documentation on Cypress custom commands: [https://docs.cypress.io/api/cypress-api/custom-commands#Syntax](https://docs.cypress.io/api/cypress-api/custom-commands#Syntax).
 
 ## Handling alerts
 

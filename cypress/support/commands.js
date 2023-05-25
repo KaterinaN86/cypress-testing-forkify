@@ -27,3 +27,11 @@
 Cypress.Commands.add("forceClick", { prevSubject: "element" }, (element) => {
     return cy.wrap(element).click({ force: true });
 });
+//Select product from list by product name.
+Cypress.Commands.add("selectProduct", (productName) => {
+    cy.get(".fixed_wrapper .prdocutname").each(($el, index, $list) => {
+        if ($el.text().includes(productName)) {
+            cy.wrap($el).click();
+        }
+    });
+});
