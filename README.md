@@ -45,7 +45,7 @@
 
 In the main panel of the Cypress App there is Settings tab on the menu. All of the settings that can be modified are displayed here, and the ones that have been changed are highlighted as shown in the image below:
 
-![Cypress settings section in Cypress App](./cypress/fixtures/readme-images/overwrite-settings.png)
+![Cypress settings section in Cypress App](./cypress/fixtures/readme-images/override-settings.png)
 
 -   **Note**: To exclude group of files, so that they are not executed as tests, **excludeSpecPattern** settings is defined in the **cypress.config.js** file:
 
