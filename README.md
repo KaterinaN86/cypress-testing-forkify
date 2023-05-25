@@ -133,21 +133,40 @@ To easily define correct selectors Chrome plugin **Ranorex celocity** can be add
     -   The next two tests describe unhappy paths where not all data is entered and data is entered in invalid format. In the first case, user is notified about missing data and in the second a message is displayed stating that format used to enter ingredient data is invalid.
     -   The last tests case describes a happy path for deleting the recipe the user has entered. This test case is added to avoid duplicate data anytime the suite is executed.
 
-## Page Object Model Pattern in Cypress (example)
+## Page Object Model Pattern in Cypress and other practices for more efficient code
 
 Page Object Model is a design pattern in the automation world which has been famous for its **easy maintenance** approach and **avoiding code duplication**. A page object is a class that represents a page in the web application. Under this model, the overall web application breaks down into logical pages. Each page of the web application generally corresponds to one class, but can even map to multiple classes also, depending on the classification of the pages. This Page class will contain all the locators of the WebElements of that web page and will also contain methods that can perform operations on those WebElements.
 
 -   In the **cypress/pages** directory, example classes: **HomePage**, **Header**, **Recipe**, **Search**, **SearchResults** are included.
 -   The tests using these classes (pages) are: **testHeader**, **testSearch**, **testHomePage.js**, **testRecipeView.js** and **testSearchResults** correspondingly.
 
-    -   **Note**: some test suites contain **Cypress Hooks** ([https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks)) which are constructs used for performing a particular set of actions just **before/after each test case** or **before/after all the test cases** in the test suite. \
-        In the same suite there are tests referencing windows by using commands like:
+### Cypress hooks
 
-    ```
-    cy.document().should("have.property", "charset").and("eq", "UTF-8");
-    ```
+Some test suites in this project contain **Cypress Hooks** ([https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Hooks)) which are constructs used for performing a particular set of actions just **before/after each test case** or **before/after all the test cases** in the test suite. Usually when writing Cypress tests resetting the state after a test or test suite is not even necessary. Cypress already automatically enforces test isolation by clearing state before each test. Using **after** and **afterEach** should be done only when necessary to avoid trying to clean up state that is already cleaned up by Cypress automatically. A state cleanup is only required is if the operations that one test runs affect another test downstream. In conclusion, shared code should be run before tests and state cleanup is performed only when absolutely necessary.
 
-    Cypress **fixture** `cypress/fixtures/example.json` ([https://docs.cypress.io/api/commands/fixture#Syntax](https://docs.cypress.io/api/commands/fixture#Syntax)) is also used to store test data in **JSON** format, that is referenced in the tests enabling data-driven testing (same test can be performed several times using different tests of data, giving varying results).
+-   **Note**: When writing tests the state of the application under test should always be taken into consideration. Tests should always be able to be run independently from one another and still pass. So creating tests with chained actions and assertions is better than crating several micro tests. For example, filling out a form, or entering a query and displaying some results is better done in one combined test together with assertions.
+
+### Referencing windows to perform document assertion
+
+More on this topic can be found in the Cypress documentation [https://docs.cypress.io/api/commands/document#Syntax](https://docs.cypress.io/api/commands/document#Syntax). In the **cypress/e2e/testHomePage.js** suite there is an example for referencing windows an document assertion:
+
+```
+it("Should verify base URL, page title and document charset property.", () => {
+cy.log("Verifying base URL");
+//Accessing URL of the page that is currently active and verifying it using fixture.
+cy.url().should("eq", data.URL);
+cy.log("Verifying page title.");
+//Accessing document.title property of the page that is currently active.
+cy.title().should("include", data.pageTitle);
+cy.log("Verifying document charset property");
+//Accessing window document object and verifying charset property.
+cy.document().should("have.property", "charset").and("eq", "UTF-8");
+});
+```
+
+### Cypress fixtures
+
+Cypress **fixture** `cypress/fixtures/example.json` ([https://docs.cypress.io/api/commands/fixture#Syntax](https://docs.cypress.io/api/commands/fixture#Syntax)) is also used to store test data in **JSON** format, that is referenced in the tests enabling data-driven testing (same test can be performed several times using different tests of data, giving varying results).
 
 ## Promises in Cypress and the **wrap()** method.
 

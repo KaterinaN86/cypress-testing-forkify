@@ -15,21 +15,18 @@ describe("Test home page", () => {
         cy.log("Open base URL");
         cy.visit("/");
     });
-    it("Should verify base URL", () => {
+    it("Should verify base URL, page title and document charset property.", () => {
         cy.log("Verifying base URL");
         //Accessing URL of the page that is currently active and verifying it using fixture.
         cy.url().should("eq", data.URL);
-    });
-    it("Should verify page title", () => {
         cy.log("Verifying page title.");
         //Accessing document.title property of the page that is currently active.
         cy.title().should("include", data.pageTitle);
-    });
-    it("Should verify charset document property", () => {
         cy.log("Verifying document charset property");
         //Accessing window document object and verifying charset property.
         cy.document().should("have.property", "charset").and("eq", "UTF-8");
     });
+
     it("Should verify main container is displayed", () => {
         homePage.verifyMainContainerExists();
     });
