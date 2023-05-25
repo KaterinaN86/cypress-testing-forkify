@@ -27,19 +27,29 @@
 
 4.  Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
 
-    -   In the **package.json** file commands for starting Cypress can be added by adding this line to the scripts section: `"cypress:open": "cypress open"`. This way, Cypress can be started by simply writing: `npm run cypress:open` in the Bash terminal.
+-   In the **package.json** file commands for starting Cypress can be added by adding this line to the scripts section: `"cypress:open": "cypress open"`. This way, Cypress can be started by simply writing: `npm run cypress:open` in the Bash terminal.
 
-    -   When we visit a site while performing tests with cypress, the framework picks up on some additional information like XHR logs and can detect some errors on loading which is particularly useful for developers. In the Cypress App executed cypress commands are written in bold text. - Tests can be run in different browsers and selecting a browser is very simple by using the Cypress App.
+-   When we visit a site while performing tests with cypress, the framework picks up on some additional information like XHR logs and can detect some errors on loading which is particularly useful for developers. In the Cypress App executed cypress commands are written in bold text. - Tests can be run in different browsers and selecting a browser is very simple by using the Cypress App.
 
     ![Browser selection in Cypress App](./cypress/fixtures/readme-images/browser-selection.png)
 
-    -   **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
+5. Overriding default settings
+
+    Default settings can be overridden by editing the - **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
 
     ```
-    specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
+      specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
     ```
 
-    The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block.
+    The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block. In this file settings regarding timeouts can also be defined.
+
+In the main panel of the Cypress App there is Settings tab on the menu. All of the settings that can be modified are displayed here, and the ones that have been changed are highlighted as shown in the image below:
+
+![Cypress settings section in Cypress App](./cypress/fixtures/readme-images/overwrite-settings.png)
+
+-   **Note**: To exclude group of files, so that they are not executed as tests, **excludeSpecPattern** settings is defined in the **cypress.config.js** file:
+
+![Excluding a group of tests](./cypress/fixtures/readme-images/cypress-config-example.png)
 
 ## Project structure
 
@@ -48,7 +58,7 @@
 -   Common commands that are very likely to be used in multiple tests are stored in the **support** directory, more precisely in the **commands.js** file. This prevents repeating code.
 -   In that same directory is the **e2e.js** file where we can add external plugins that can be used in our framework. An example of that is adding the **XPath** plugin by adding line: `require("cypress-xpath");` to the file content.
 -   If there are files downloaded while certain tests are executed they will be stored in the **downloads** folder.
--   Configuration properties are defined in the **cypress.config.js** file. Example:
+-   As discussed previously, configuration properties are defined in the **cypress.config.js** file. Example:
 
     ![Overwriting settings in the cypress.config.js file](./cypress/fixtures/readme-images/config-overwriting.png)
 
@@ -291,6 +301,8 @@ Cypress.Commands.add("forceClick", { prevSubject: "element" }, (element) => {
 ```
 
 Documentation on Cypress custom commands: [https://docs.cypress.io/api/cypress-api/custom-commands#Syntax](https://docs.cypress.io/api/cypress-api/custom-commands#Syntax).
+
+-   **Note:** an example for using Cypress fixtures, aliases, custom commands and iterating over an array can be found in script: **cypress/e2e/examples/custom-commands/add-multiple-items-to-basket.js**.
 
 ## Handling alerts
 

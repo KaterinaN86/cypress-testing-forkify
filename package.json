@@ -23,7 +23,7 @@
     },
     "homepage": "https://github.com/KaterinaN86/cypress-testing-forkify#readme",
     "devDependencies": {
-        "cypress": "^12.6.0",
+        "cypress": "^12.13.0",
         "cypress-xpath": "^2.0.1"
     }
 }
