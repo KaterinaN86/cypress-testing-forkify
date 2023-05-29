@@ -1,6 +1,7 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+    projectId: "i8r8jg",
     e2e: {
         setupNodeEvents(on, config) {
             // implement node event listeners here
@@ -11,5 +12,11 @@ module.exports = defineConfig({
         baseUrl: "https://forkify-k-project.netlify.app/",
         chromeWebSecurity: false,
         experimentalModifyObstructiveThirdPartyCode: true,
+        pageLoadTimeout: 12000,
+        defaultCommandTimeout: 10000,
+        env: {
+            automationStoreUrl: "https://automationteststore.com/",
+            webdriverUniUrl: "http://webdriveruniversity.com/",
+        },
     },
 });

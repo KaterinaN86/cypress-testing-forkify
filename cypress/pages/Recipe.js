@@ -48,9 +48,13 @@ class Recipe {
             .should("have.text", "Directions");
     }
     clickDirectionsButton() {
+        //Clicking on button directions redirects user to another page.
         cy.log("Click on 'Directions' button.");
         this.getDirectionsButton().invoke("removeAttr", "target").forceClick();
+        //Redirecting user back to base URL.
         cy.go("back");
+        //Verifying URL.
+        cy.url().should("include", "forkify");
     }
 
     handleUncaughtException() {

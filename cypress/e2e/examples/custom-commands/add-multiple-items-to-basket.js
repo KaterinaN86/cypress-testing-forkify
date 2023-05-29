@@ -8,7 +8,7 @@ describe("Add multiple items to basket.", () => {
     beforeEach(
         `Open "automationteststore" home page and navigate to "Hair Care" products page.`,
         () => {
-            cy.visit("https://automationteststore.com/");
+            cy.visit(Cypress.env("automationStoreUrl"));
             //Accessing an anchor element with href attribute value containing "product/category&path=']".
             cy.get("a[href*='product/category&path=']")
                 .contains("Hair Care")
@@ -25,6 +25,12 @@ describe("Add multiple items to basket.", () => {
             }
             cy.log("Display shopping cart content.");
             cy.xpath("//ul[@class='nav topcart pull-left']").click();
+        });
+    });
+
+    it("Should open webdriveruniversity page", () => {
+        cy.origin(Cypress.env("webdriverUniUrl"), () => {
+            cy.visit("/");
         });
     });
 });

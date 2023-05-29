@@ -21,9 +21,9 @@
 
 1.  Root project directory **cypress-testing-forkify** is created. This test project was built by using **Visual Studio Code** IDE which also needs to be installed.
 2.  Initializing **package.json** file by using the following command via **Git Bash** terminal (Terminal -> New Terminal -> Select Bash on bottom right): `npm init`.
-3.  Install cypress framework using this command: `npm install --save-dev cypress@12.6.0`. This will add **node_modules** directory in the project root directory. When copying this project this directory doesn't have to be transferred together with project content because it can easily be added in the same manner as described above.
+3.  Install cypress framework using this command: `npm install --save-dev cypress@12.13.0`. This will add **node_modules** directory in the project root directory. When copying this project this directory doesn't have to be transferred together with project content because it can easily be added in the same manner as described above.
 
-    -   **Note:** Installed version matches one used in Udemy tutorial [https://www.udemy.com/course/cypress-io-master-class](https://www.udemy.com/course/cypress-io-master-class).
+    -   **Note:** Install latest version, it doesn't match the one in [https://www.udemy.com/course/cypress-io-master-class](https://www.udemy.com/course/cypress-io-master-class) but course is still easy to follow.
 
 4.  Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
 
@@ -236,9 +236,7 @@ it('should wait for promises to resolve', () => {
 ## Invoke and alias
 
 Invoke a function on the previously yielded subject.
-
 If you want to get a property that is not a function on the previously yielded subject, use .its().
-
 If you chain further commands off of .invoke(), it will be called multiple times. If you only want the method to be called once, end your chain with .invoke() and start fresh with cy afterwards.
 
 ```
@@ -304,6 +302,20 @@ Documentation on Cypress custom commands: [https://docs.cypress.io/api/cypress-a
 
 -   **Note:** an example for using Cypress fixtures, aliases, custom commands and iterating over an array can be found in script: **cypress/e2e/examples/custom-commands/add-multiple-items-to-basket.js**.
 
+### **Environment (global) variables**
+
+Environment variables are also known as global because the value stored in such variable is accessible across different tests. Environment variables are declared in the **cypress.config.js** file:
+
+![Declaring environment variables in cypress.config.js file](./cypress/fixtures/readme-images/environment-variables.png)
+
+More on this topic can be found here: [https://docs.cypress.io/guides/guides/environment-variables.html#Setting](https://docs.cypress.io/guides/guides/environment-variables.html#Setting).
+
+Environment variables can also be defined via command line:
+
+```
+./node_modules/.bin/cypress run --browser chrome --headed --spec cypress/e2e/webdriver-uni/contact-us.js --env first_name=Tim
+```
+
 ## Handling alerts
 
 Cypress automatically handles alerts, however events can still be handled to add logic to our tests [https://docs.cypress.io/api/cypress-api/catalog-of-events#Event-Types](https://docs.cypress.io/api/cypress-api/catalog-of-events#Event-Types).
@@ -336,3 +348,91 @@ Cypress automatically handles alerts, however events can still be handled to add
 ## Working with iframe
 
 Even though Cypress does not provide native access to an embedded iframe (because it is a cross origin frame) elements it is still possible to use a workaround. More on working with embedded iframe can be found in the Cypress documentation [https://docs.cypress.io/guides/guides/web-security#Cross-origin-iframes](https://docs.cypress.io/guides/guides/web-security#Cross-origin-iframes). A workaround where the iframe element is accessed via the **contents()** method and the \<body\> tag can be found in **cypress/e2e/examples/iframe.js**.
+
+## Checkboxes and radio buttons
+
+To use Cypress methods for selection options listed with check boxes or radio buttons an element must be an `<input>` with type `check box` or `radio button` [https://docs.cypress.io/api/commands/check#Syntax](https://docs.cypress.io/api/commands/check#Syntax). Options can be checked by using specified value, type (for example: `[type="radio"]`), methods commonly used for DOM traversal like **first**, **next** and so on, selector **n-th child**
+
+```
+ cy.get('#checkboxes > :nth-child(1) > input').as('option-1')
+```
+
+Method **should** is used for assertion with values **be.checked** or **not.be.checked** and so on.
+
+-   **Example**: Find the checked option and verify it.
+
+```
+cy.get('#pick-fruit :checked').should('be.checked').and('have.value', 'apple')
+```
+
+The same methods can be used to test radio buttons. In the following example, a group of radio buttons is selected and from that group the button with index 1 is selected:
+
+```
+cy.get('#radio-buttons').find("[type='radio']").eq(1).check()
+```
+
+State validation can easily be performed by using the **should()** method combined with the options like **not.be.checked**, **be.checked**, **be.unchecked**, **be.disabled**, **not.be.disabled**, **have.value**.
+
+## Dropdown lists/menus
+
+The method is very similar to working with checkboxes and radio buttons. Instead of **check()**, the **select()** method is used to select an `<option>` within a `<select>` element. Documentation can be found here [https://docs.cypress.io/api/commands/select](https://docs.cypress.io/api/commands/select).
+
+```
+//Selecting the <select> element by id and the <option> element by value.
+cy.get('#dropdowm-menu-1').select('c#')
+//Verifying selected option value.
+cy.get('#dropdowm-menu-2').select('testng').should('have.value', 'testng')
+//Selecting by <option> test content and performing verification.
+cy.get('#dropdowm-menu-3').select('JQuery').contains('JQuery')
+```
+
+## Autocomplete (Suggested) lists
+
+In order to select an option from the list of suggestions method **each()** is used. File **cypress/e2e/examples/autocomplete-list.js** is an example of a test suite that uses this type of lists.
+
+## Mouse actions
+
+Working with mouse events requires using the **trigger()** method [https://docs.cypress.io/api/commands/trigger#Syntax](https://docs.cypress.io/api/commands/trigger#Syntax). File **cypress/e2e/examples/mouse-actions.js** contains test suite with mouse actions examples.
+
+## Browser navigation
+
+For this purpose methods **go()** and **reload()** are used. Syntax is explained in detail in Cypress documentation [https://docs.cypress.io/api/commands/go#Syntax](https://docs.cypress.io/api/commands/go#Syntax), [https://docs.cypress.io/api/commands/reload](https://docs.cypress.io/api/commands/reload). Arguments **back** and **forward** are typically used with method **go()** and after navigating to different page assertion of document URL can be performed using **should()** method.
+
+```
+    clickDirectionsButton() {
+        //Clicking on button directions redirects user to another page.
+        cy.log("Click on 'Directions' button.");
+        this.getDirectionsButton().invoke("removeAttr", "target").forceClick();
+        //Redirecting user back to base URL.
+        cy.go("back");
+        //Verifying URL.
+        cy.url().should("include", "forkify");
+    }
+```
+
+## Configuring and handling timeouts
+
+### **URL timeouts**
+
+Every time `cy.visit()` is used the default **pageLoadTimeout** property is applied (this can be defined in **cypress.config.js**). In order to explicitly set URL timeout the **timeout** property can be set when passing the options object in the **visit()** method [https://docs.cypress.io/api/commands/visit](https://docs.cypress.io/api/commands/visit).
+
+```
+    //Cypress hook used to call a function before each test is executed.
+    beforeEach(function () {
+        // runs before each test in the it block
+        cy.log("Open base URL");
+        //Explicitly set pageLoadTimeout
+        cy.visit("/", { timeout: 5000 });
+    })
+```
+
+### **Overwriting _defaultCommandTimeout_ setting**
+
+A default command timeout is the time Cypress will give a certain command to execute before it is considered to have failed. It can be defined explicitly so that it will overwrite the default Cypress property displayed in the \*_Settings_ section of the Cypress App.
+
+```
+//Explicitly set commandTimeout
+Cypress.config("defaultCommandTimeout", 3000);
+```
+
+Depending on where the command is used the default command timeout can be overwritten for the whole test suite or a specific test. A specific timeout can also be applied in a command chain so that way it will affect only the execution of that specific chain of commands.

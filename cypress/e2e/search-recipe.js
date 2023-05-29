@@ -21,6 +21,8 @@ describe("Test recipe search operation", () => {
         cy.get(".search__field").type("yellow");
         //Click search button.
         cy.get(".search__btn").click();
+        //Explicitly set commandTimeout
+        Cypress.config("defaultCommandTimeout", 3000);
         //Select message element displayed after performed search and take screenshot. No recipes previews are shown because API call using query text gave no results.
         cy.get(
             "p:contains(No recipe was found! Please try again...)"
