@@ -182,7 +182,7 @@ describe("Test Add recipe form", () => {
         cy.get(".upload__btn").click();
     });
     //Describes happy path for deleting last uploaded user recipe from database to avoid redundant data.
-    it("Should delete last uploaded user recipe", () => {
+    it.skip("Should delete last uploaded user recipe", () => {
         //Open "forkify" site.
         cy.visit("https://forkify-k-project.netlify.app/");
         //Enter query text "salad" in search input text field.

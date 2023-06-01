@@ -8,6 +8,10 @@ class Recipe {
         return cy.get("#message-text");
     }
 
+    getMainContainer() {
+        return cy.get(".recipe");
+    }
+
     getDirectionsButton() {
         return cy.get(".recipe__btn");
     }
@@ -37,6 +41,18 @@ class Recipe {
     getMessageText() {
         this.getMessageElement().invoke("text").as("messageText");
         cy.get("@messageText").its("length").should("be.gt", 5);
+    }
+
+    getBookmarkButton() {
+        return cy.get("button[class='btn--round btn--bookmark tooltip']");
+    }
+
+    getTitle() {
+        return cy.get(".recipe__title > span");
+    }
+
+    addToBookmarks() {
+        this.getBookmarkButton().click();
     }
 
     verifyDirectionsButton() {

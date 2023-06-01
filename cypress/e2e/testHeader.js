@@ -29,6 +29,6 @@ describe("Test app header", () => {
         header.verifyNavItems(data.navItem);
     });
     it("Should click random nav menu element.", () => {
-        header.clickRandomNavItemElement(data.navItem);
+        header.clickRandomNavItemElement(data);
     });
 });

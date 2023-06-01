@@ -1,3 +1,4 @@
 {
-    "navItem": ["Add recipe", "Bookmarks", "Weekly schedule", "Shopping list"]
+    "navItem": ["Add recipe", "Bookmarks", "Weekly schedule", "Shopping list"],
+    "bookmarksMessage": "No bookmarks yet. Find a nice recipe and bookmark it :)"
 }

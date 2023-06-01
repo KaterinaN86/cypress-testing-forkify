@@ -7,7 +7,7 @@ class Search {
     }
 
     inputSearchQuery(text) {
-        cy.log("Entering search operation query text.");
+        cy.log("Enter query text for performing search operation.");
         this.getInputTextField().type(text);
     }
     verifySearchButton() {

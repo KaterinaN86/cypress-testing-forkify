@@ -5,7 +5,7 @@ describe("Test recipe search operation", () => {
         //Open "forkify" site
         cy.visit("/");
         //Select text input field for recipe search. Input query text in recipe search field.
-        cy.get(".search__field").type("pasta");
+        cy.get(".search__field").type("salad");
         //Click search button.
         cy.get(".search__btn").click();
         //Select preview elements displayed after performed search. This is added so all of the content of the search-results div element is displayed before the screenshot is taken.

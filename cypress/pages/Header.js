@@ -20,6 +20,10 @@ class Header {
         return cy.get(".nav__item", { timeout: 5000 });
     }
 
+    getBookmarksButton() {
+        return cy.get("#bookmarksMenuEl");
+    }
+
     verifyLogo() {
         this.getLogo().then(($img) => {
             expect($img).to.have.attr("src", "/logo.9272a069.png");
@@ -47,50 +51,58 @@ class Header {
         });
     }
 
-    clickRandomNavItemElement(items) {
-        let randomIndex = Math.floor(Math.random() * items.length);
+    clickRandomNavItemElement(data) {
+        let randomIndex = Math.floor(Math.random() * data.navItem.length);
         cy.log("Generated index: " + randomIndex);
         cy.log("Click on random element from nav menu.");
         this.getNavItemElements().each(($el, index, $list) => {
-            randomIndex = 0;
             if (index === randomIndex) {
-                cy.wrap($el).find(".nav__btn").click({ timeout: 5000 });
-                cy.log("Selected: " + items[randomIndex] + " from nav menu.");
+                cy.wrap($el).find(".nav__btn").as("menuBtn");
+                cy.get("@menuBtn").realHover().click({ release: false });
+                //cy.get(".preview", { timeout: 10000 }).should("be.visible");
+                cy.log(
+                    "Selected: " + data.navItem[randomIndex] + " from nav menu."
+                );
                 //Verify content for clicked item is displayed.
-                this.verifyContentAfterClick(randomIndex);
+                this.verifyContentAfterClick(index, data);
             }
         });
     }
 
-    verifyContentAfterClick(index) {
+    verifyContentAfterClick(index, data) {
         let haveMatched = true;
         switch (index) {
             case 0: {
                 cy.log("Upload recipe");
-                uploadRecipe.getMainContainer();
+                uploadRecipe.getMainContainer().invoke("show");
                 uploadRecipe.verifyHeadings();
                 break;
             }
             case 1: {
-                cy.log("Bookmarks");
+                cy.reload();
+                cy.log("Verifying bookmarks error message.");
                 expect(bookmarks.getMainContainer()).to.exist;
+                bookmarks.getMainContainer().invoke("show");
+                bookmarks.verifyErrorMessage(data.bookmarksMessage);
                 break;
             }
             case 2: {
                 cy.log("Weekly schedule");
                 expect(schedule.getMainContainer()).to.exist;
+                schedule.getMainContainer().invoke("show");
                 break;
             }
             case 3: {
                 cy.log("Shopping list");
                 expect(shoppingList.getMainContainer()).to.exist;
+                shoppingList.getCloseButton().forceClick();
                 break;
             }
             default: {
-                let haveMatched = false;
+                haveMatched = false;
             }
         }
-        if (haveMatched) {
+        if (haveMatched && index === 0) {
             cy.get(".overlay").forceClick("topLeft");
         }
     }

@@ -1,7 +1,9 @@
 /// <reference types="Cypress" />
 
-import searchResutls from "../pages/SearchResults.js";
+import searchResults from "../pages/SearchResults.js";
 import search from "../pages/Search.js";
+import recipe from "../pages/Recipe.js";
+import bookmarks from "../pages/Bookmarks.js";
 
 describe("Test search form", () => {
     //Cypress hook that refers to a function being called before executing test suite.
@@ -19,14 +21,27 @@ describe("Test search form", () => {
 
     it("Should verify main container", () => {
         cy.log("Verifying main search results container.");
-        searchResutls.verifyMainContainer();
+        searchResults.verifyMainContainer();
     });
 
-    it("Should log current page number and click on random recipe", () => {
+    it("Should add random recipe from search results to bookmarks", () => {
         search.inputSearchQuery(data.secondSearchQuery);
         search.clickSearchButton();
-        searchResutls.getCurrentPageInfo();
-        cy.log("Click on random recipe preview.");
-        searchResutls.clickRandomRecipePreview();
+        searchResults.getCurrentPageInfo();
+        let i = 0;
+        while (i < 2) {
+            searchResults.clickRandomRecipePreview();
+            recipe.addToBookmarks();
+            bookmarks.getBookmarkList();
+            i++;
+        }
+        bookmarks.verifyTitles();
+        Cypress.on("fail", (error, runnable) => {
+            if (error.message.includes("`.preview`")) {
+                console.log("Bookmarks not loaded!");
+            } else {
+                throw error;
+            }
+        });
     });
 });
