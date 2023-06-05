@@ -65,6 +65,8 @@ class Header {
             if (index === randomIndex) {
                 cy.wrap($el).find(".nav__btn").as("menuBtn");
                 cy.get("@menuBtn").realHover().click({ release: false });
+                //Take a screenshot after clicking on random element.
+                cy.screenshot();
                 cy.log(
                     "Selected: " + data.navItem[randomIndex] + " from nav menu."
                 );

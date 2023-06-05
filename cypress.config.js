@@ -9,6 +9,7 @@ module.exports = defineConfig({
         //Setting that defines the type of files that are considered as specs (tests).
         specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx,feature}",
         screenshotOnRunFailure: true,
+        trashAssetsBeforeRuns: true,
         baseUrl: "https://forkify-k-project.netlify.app/",
         chromeWebSecurity: false,
         experimentalModifyObstructiveThirdPartyCode: true,

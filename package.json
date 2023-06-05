@@ -9,7 +9,8 @@
         "triggerAllTests-headless": "npx cypress run",
         "triggerAllTests-headed": "npx cypress run --headed",
         "triggerAllTests-chrome": "npx cypress run --browser chrome",
-        "triggerAllTests-dashboard": "npx cypress run --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c"
+        "triggerAllTests-dashboard": "npx cypress run --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c",
+        "triggerSearchTest-chrome": "npx cypress run --spec cypress/e2e/testSearch.js --browser chrome --headed "
     },
     "repository": {
         "type": "git",

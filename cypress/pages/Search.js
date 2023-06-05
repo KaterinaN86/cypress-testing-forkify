@@ -5,10 +5,10 @@ class Search {
     getSearchButton() {
         return cy.get(".search__btn");
     }
-
     inputSearchQuery(text) {
         cy.log("Enter query text for performing search operation.");
         this.getInputTextField().type(text);
+        cy.screenshot();
     }
     verifySearchButton() {
         expect(this.getSearchButton()).to.exist;
@@ -24,7 +24,7 @@ class Search {
             cy.debug();
             console.log(`Clicked on button with text: ${$searchButton.text()}`);
             //Timeouts can also be defined when using assertions.
-            cy.wrap($searchButton).contains("Search", { timeout: 3000 });
+            cy.wrap($searchButton).contains("Search2", { timeout: 3000 });
         });
         cy.get(".preview");
     }
