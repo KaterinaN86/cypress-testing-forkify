@@ -1,4 +1,5 @@
 /// <reference types="Cypress" />
+
 class Recipe {
     getMessageContainer() {
         return cy.get("div.message");
@@ -14,6 +15,18 @@ class Recipe {
 
     getDirectionsButton() {
         return cy.get(".recipe__btn");
+    }
+    getMessageText() {
+        this.getMessageElement().invoke("text").as("messageText");
+        cy.get("@messageText").its("length").should("be.gt", 5);
+    }
+
+    getBookmarkButton() {
+        return cy.get("button[class='btn--round btn--bookmark tooltip']");
+    }
+
+    getTitle() {
+        return cy.get(".recipe__title > span");
     }
 
     verifyMessageContainerExists() {
@@ -38,21 +51,32 @@ class Recipe {
         });
     }
 
-    getMessageText() {
-        this.getMessageElement().invoke("text").as("messageText");
-        cy.get("@messageText").its("length").should("be.gt", 5);
+    logRecipeTitle() {
+        this.getTitle().then(($title) => {
+            cy.log("Recipe title: " + $title.text());
+        });
     }
-
-    getBookmarkButton() {
-        return cy.get("button[class='btn--round btn--bookmark tooltip']");
-    }
-
-    getTitle() {
-        return cy.get(".recipe__title > span");
-    }
-
+    /**
+     * Adds active recipe to bookmarks list. Before adding recipe a check needs to be performed to make sure it isn't already bookmarked.
+     */
     addToBookmarks() {
-        this.getBookmarkButton().click();
+        //Selecting bookmark image element.
+        this.getBookmarkButton()
+            .find("use")
+            .should("have.attr", "href")
+            .then(($href) => {
+                //If href value of bookmark icon ends with fill, recipe is already bookmarked.
+                if ($href.endsWith("-fill")) {
+                    this.logRecipeTitle();
+                    cy.log(`Recipe already bookmarked!`);
+                }
+                //Adding recipe to bookmarks.
+                else {
+                    this.getBookmarkButton().click();
+                    this.logRecipeTitle();
+                    cy.log("Recipe added to bookmarks.");
+                }
+            });
     }
 
     verifyDirectionsButton() {

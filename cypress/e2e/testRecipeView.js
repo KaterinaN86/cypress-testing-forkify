@@ -28,14 +28,13 @@ describe("Test recipe details view", () => {
         recipe.verifyMessageText();
         cy.log("Recipe view message verified!");
     });
-    it("Should log message text in recipe details view and should verify length is grater than 5", () => {
+    it("Should log message text in recipe details view and should verify length is greater than 5", () => {
         recipe.getMessageText();
     });
-    it("Should click on random recipe preview after performed search", () => {
+    it("Should click on random recipe preview and follow directions link.", () => {
         search.inputSearchQuery(data.searchQuery);
         search.clickSearchButton();
         searchResults.getCurrentPageInfo();
-        cy.log("Click on random recipe preview.");
         searchResults.clickRandomRecipePreview();
         recipe.verifyDirectionsButton();
         recipe.handleUncaughtException();

@@ -268,12 +268,21 @@ cy.get('div.container')
 
 -   **Note**: see **e2e/examples/alias-invoke.js** for more examples.
 
-## Page Object Model Pattern in Cypress and other practices for more efficient code
+## Page Object Model pattern in Cypress and other practices for more efficient code
 
 Page Object Model is a design pattern in the automation world which has been famous for its **easy maintenance** approach and **avoiding code duplication**. A page object is a class that represents a page in the web application. Under this model, the overall web application breaks down into logical pages. Each page of the web application generally corresponds to one class, but can even map to multiple classes also, depending on the classification of the pages. This Page class will contain all the locators of the WebElements of that web page and will also contain methods that can perform operations on those WebElements.
 
--   In the **cypress/pages** directory, example classes: **HomePage**, **Header**, **Recipe**, **Search**, **SearchResults** are included.
+-   In the **cypress/pages** directory, example classes: **Bookmarks**, **HomePage**, **Header**, **Recipe**, **Search**, **SearchResults**, **Schedule**, **UploadRecipe**, **ShoppingList** are included.
 -   The tests using these classes (pages) are: **testHeader**, **testSearch**, **testHomePage.js**, **testRecipeView.js** and **testSearchResults** correspondingly.
+
+In order to be able to use the methods defined in separate classes in a specific test suite the module that contains that class needs to be imported. For example, in the **cypress/e2e/testSearchResults.js** test suite several classes are used and are imported with he following commands:
+
+```
+import searchResults from "../pages/SearchResults.js";
+import search from "../pages/Search.js";
+import recipe from "../pages/Recipe.js";
+import bookmarks from "../pages/Bookmarks.js";
+```
 
 ### **Cypress hooks**
 
@@ -290,12 +299,16 @@ Cypress **fixture** `cypress/fixtures/example.json` ([https://docs.cypress.io/ap
 
 ### **Cypress custom commands**
 
-Often certain logic needs to be executed several times in a test suite. It's good practice to load that logic in a custom command that can be called multiple times. Custom commands are defined in the \*\*cypress/support/commands.js\*\* file.
+Often certain logic needs to be executed several times in a test suite. It's good practice to load that logic in a custom command that can be called multiple times. Custom commands are defined in the **cypress/support/commands.js** file. Below is an example of a custom command for method **forceClick()**. This method can be used anytime there is a need to set the **force** property to true while performing click action. Default position is center, but can be specified otherwise on call.
 
 ```
-Cypress.Commands.add("forceClick", { prevSubject: "element" }, (element) => {
-    return cy.wrap(element).click({ force: true });
-});
+Cypress.Commands.add(
+    "forceClick",
+    { prevSubject: "element" },
+    (element, position = "center") => {
+        return cy.wrap(element).click(position, { force: true });
+    }
+);
 ```
 
 Documentation on Cypress custom commands: [https://docs.cypress.io/api/cypress-api/custom-commands#Syntax](https://docs.cypress.io/api/cypress-api/custom-commands#Syntax).
@@ -340,6 +353,14 @@ Cypress automatically handles alerts, however events can still be handled to add
     2.  Drag & Drop
     3.  Double click
     4.  Click and hold
+
+### **Cypress real events**
+
+This plugin is used in several tests to solve the issue with simulated cypress events, like **click**, **hover** and similar. Because event property `event.isTrusted` will be false by default, in some situations Cypress in unable to simulate the events in test scenarios. Full documentation can be found here: [https://github.com/dmtrKovalenko/cypress-real-events](https://github.com/dmtrKovalenko/cypress-real-events).
+
+-   **Example test scenario that uses real events plugin**
+
+    A positive test scenario is simulated. First, app header content is verified and after that random element from the menu is clicked. File **cyperss/e2e/testHeader.js** contains test suite. Test suite also uses class **cypress/pages/Header.js**.
 
 ## DOM traversal
 
@@ -428,11 +449,72 @@ Every time `cy.visit()` is used the default **pageLoadTimeout** property is appl
 
 ### **Overwriting _defaultCommandTimeout_ setting**
 
-A default command timeout is the time Cypress will give a certain command to execute before it is considered to have failed. It can be defined explicitly so that it will overwrite the default Cypress property displayed in the \*_Settings_ section of the Cypress App.
+A default command timeout is the time Cypress will give a certain command to execute before it is considered to have failed. It can be defined explicitly so that it will overwrite the default Cypress property displayed in the **Settings** panel of the Cypress App.
 
 ```
 //Explicitly set commandTimeout
 Cypress.config("defaultCommandTimeout", 3000);
 ```
 
-Depending on where the command is used the default command timeout can be overwritten for the whole test suite or a specific test. A specific timeout can also be applied in a command chain so that way it will affect only the execution of that specific chain of commands.
+Depending on where the command is used the default command timeout can be overwritten for the whole test suite or a specific test. If the line above is added right after the describe block is opened it will overwrite the default command timeout for the entire test suite. A specific timeout can also be applied in a command chain so that way it will affect only the execution of that specific chain of commands.
+
+```
+    clickSearchButton() {
+        cy.log("Click on search button.");
+        //Overwriting default command timeout by setting the timeout property when  calling 'click' method.
+        this.getSearchButton().click({ timeout: 3000 });
+        //Example of handling a promise so we can control order of execution.
+        this.getSearchButton().then(($searchButton) => {
+            console.log(`Clicked on button with text: ${$searchButton.text()}`);
+            //Timeouts can also be defined when using assertions.
+            cy.wrap($searchButton).contains("Search", { timeout: 3000 });
+        });
+        cy.log("Loading search results preview.");
+        cy.get(".preview");
+    }
+}
+```
+
+### **Using the _pause_ and _wait_ commands**
+
+Whenever there is a need to pause the test in execution the `cy.pause()` method can be called. While the test is paused interaction with the user interface is enabled via the Cypress App. In the app there are also options for resuming or continuing to the next step of the test in execution. Documentation can be found here [https://docs.cypress.io/api/commands/pause](https://docs.cypress.io/api/commands/pause).
+
+![Declaring environment variables in cypress.config.js file](./cypress/fixtures/readme-images/pause.png)
+
+Cypress also offers the **wait()** method for defining fixed timeouts. This type of timeout is not always recommended because when used too often it will drastically increase execution time for a test suite. To learn more follow link to documentation [https://docs.cypress.io/api/commands/wait#Syntax](https://docs.cypress.io/api/commands/wait#Syntax)
+
+## Debugging
+
+To enter debug mode the method `cy.debug()` can be used or simply the **debugger** keyword. When using the debugger the same logic for working with asynchronous commands and promises applies.
+Using the **pause** command is also a very good way to debug a test because of the option to interact with the UI and execute the test step by step.
+Another approach when debugging is to use the console with the help of browser developer tools and log the values of variables or results of certain executed commands.
+Errors in Cypress also contain information about the cause of the test test failure, like error message. By using that message the cause of failure can be detected and the error can be handled. For example, this block is added to the
+last test in the **cypress/e2e/testSearchResults.js** test suite to prevent test failure when an element is not rendered on time:
+
+```
+    //To prevent test failure if recipe previews are not rendered on time, this block is added. It will be executed when recipe previews are not rendered.
+        Cypress.on("fail", (error, runnable) => {
+            if (error.message.includes("`.preview`")) {
+                console.log("Bookmarks not loaded!");
+            }
+            //If there was another reason for test failure, an error is still thrown.
+            else {
+                throw error;
+            }
+        })
+```
+
+-   **Note**: Debugger command will also pause the test and special options are available in the Cypress App for working with tests in debug mode. When running the test, developer tools also need to be opened (right click -> Inspect). In the following example method **clickSearchButton** in class **cypres/pages/Search.js** has been modified and **debug** method is called right before clicking the **Search** button:
+
+    ![Declaring environment variables in cypress.config.js file](./cypress/fixtures/readme-images/debug-mode.png)
+
+    ```
+            this.getSearchButton().then(($searchButton) => {
+            cy.debug();
+            console.log(`Clicked on button with text: ${$searchButton.text()}`);
+            //Timeouts can also be defined when using assertions.
+            cy.wrap($searchButton).contains("Search", { timeout: 3000 });
+        });
+    ```
+
+    More on this topic can be found here [https://docs.cypress.io/guides/guides/debugging#Using-debugger](https://docs.cypress.io/guides/guides/debugging#Using-debugger).

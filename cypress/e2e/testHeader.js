@@ -5,6 +5,7 @@ import header from "../pages/Header.js";
 describe("Test app header", () => {
     //Cypress hook that refers to a function being called before executing test suite.
     before(function () {
+        //Using Cypress fixture to load test data.
         cy.fixture("nav-items").then(function (data) {
             //Using globalThis to be able to access variable data from anywhere in the code, no mather the scope.
             globalThis.data = data;
@@ -17,15 +18,9 @@ describe("Test app header", () => {
         //Explicitly set pageLoadTimeout
         cy.visit("/", { timeout: 5000 });
     });
-    it("Should verify main container", () => {
-        cy.log("Verifying header main container");
+    it("Should verify main header container, app logo and menu elements.", () => {
         header.verifyMainContainer();
-    });
-    it("Should verify app logo", () => {
-        cy.log("Verifying app logo.");
         header.verifyLogo();
-    });
-    it("Should verify nav elements text", () => {
         header.verifyNavItems(data.navItem);
     });
     it("Should click random nav menu element.", () => {

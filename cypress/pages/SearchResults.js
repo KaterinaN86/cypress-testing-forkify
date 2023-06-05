@@ -24,8 +24,8 @@ class SearchResults {
         this.getRecipes().then(($list) => {
             //Math.random() generates random number from 0 to 1, not including 1. That number is multiplied by tne number of elements. Math.floor() will round the result to the smaller number -> 3,6 is "floored" to 3.
             const randomIndex = Math.floor(Math.random() * $list.length);
-            cy.log("Generated index: " + randomIndex);
             cy.wrap($list[randomIndex]).click();
+            cy.log(`Clicked recipe with index: ${randomIndex}`);
         });
     }
 
@@ -33,7 +33,7 @@ class SearchResults {
         this.getPageInfo().then(($textValue) => {
             let textArray = $textValue.split(" ");
             let currentPageNum = textArray[1];
-            cy.log("Current page is " + currentPageNum);
+            cy.log("Current search results page is " + currentPageNum);
         });
     }
 }
