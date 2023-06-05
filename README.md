@@ -69,26 +69,7 @@ baseUrl: "https://forkify-k-project.netlify.app/"
 ```
 
 -   Following execution, **json reports** can be saved in the **results** directory.
--   In the **screenshots** directory images of executed tests are stored. Documentation with detailed explanation can be found here: [https://docs.cypress.io/guides/references/configuration#Screenshots](https://docs.cypress.io/guides/references/configuration#Screenshots).
-
-    -   **Note**: to take a test screenshot Cypress method **screenshot()** needs to be used individually or on a specific element. After the test is successfully executed, screenshot of the selected element can be found in the **screenshots** directory:
-
-    ![Path of screenshots directory](./cypress/fixtures/readme-images/screenshots-dir.png)
-
-    -   In method **inputSearchQuery** of class **cypress/pages/Search.js** the **screenshot** method is called and a screenshot is taken right after query text is typed inside the search text field.
-
-    ```
-        inputSearchQuery(text) {
-        cy.log("Enter query text for performing search operation.");
-        this.getInputTextField().type(text);
-        cy.screenshot();
-        }
-    ```
-
-    Cypress can also take screenshots of tests on failure. By setting the **screenshotOnRunFailure** property to **true** in the **cypress.config.json** file this option is enabled and screenshot will be taken on failure only when the test is executed by running the **cypress run** command using npm via the bash command terminal. For example, if we add **2** at the end of the text **Search** in the following assertion ` cy.wrap($searchButton).contains("Search2", { timeout: 3000 });` and then run the test by using: `npm run triggerSearchTest-chrome` a screenshot will be saved after the test has failed.
-
-    Another useful option is **trashAssetsBeforeRuns** which will delete previous screenshots before saving new ones.
-
+-   In the **screenshots** directory, images of executed tests are stored.
 -   Cypress also has the capability to record text execution and videos are saved in the corresponding **videos** directory.
 
 ## Using **Mocha**
@@ -532,3 +513,27 @@ last test in the **cypress/e2e/testSearchResults.js** test suite to prevent test
     ```
 
     More on this topic can be found here [https://docs.cypress.io/guides/guides/debugging#Using-debugger](https://docs.cypress.io/guides/guides/debugging#Using-debugger).
+
+## Screenshots and videos
+
+to take a test screenshot Cypress method **screenshot()** needs to be used individually or on a specific element. After the test is successfully executed, screenshot of the selected element can be found in the **screenshots** directory:
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/screenshots-dir.png)
+
+-   In method **inputSearchQuery** of class **cypress/pages/Search.js** the **screenshot** method is called and a screenshot is taken right after query text is typed inside the search text field.
+
+    ```
+        inputSearchQuery(text) {
+        cy.log("Enter query text for performing search operation.");
+        this.getInputTextField().type(text);
+        cy.screenshot();
+        }
+    ```
+
+Cypress can also take screenshots of tests on failure. By setting the **screenshotOnRunFailure** property to **true** in the **cypress.config.js** file this option is enabled and screenshot will be taken on failure only when the test is executed by running the **cypress run** command using npm via the bash command terminal. For example, if we add **2** at the end of the text **Search** in the following assertion ` cy.wrap($searchButton).contains("Search2", { timeout: 3000 });` and then run the test by using: `npm run triggerSearchTest-chrome` a screenshot will be saved after the test has failed.
+
+Another useful option is **trashAssetsBeforeRuns** which will delete previous screenshots before saving new ones.
+
+Documentation with detailed explanation can be found here: [https://docs.cypress.io/api/cypress-api/screenshot-api](https://docs.cypress.io/api/cypress-api/screenshot-api).
+
+Whenever a test is executed by using the `cypress run` command a video is recorded in the **cypress/videos** directory ([https://docs.cypress.io/guides/guides/screenshots-and-videos#Videos](https://docs.cypress.io/guides/guides/screenshots-and-videos#Videos)). Various settings regarding videos and screenshots can be defined in the **cypress.config.js** file, for detailed explanation refer to: [https://docs.cypress.io/guides/references/configuration#Videos](https://docs.cypress.io/guides/references/configuration#Videos), [https://docs.cypress.io/guides/references/configuration#Screenshots](https://docs.cypress.io/guides/references/configuration#Screenshots).
