@@ -566,4 +566,16 @@ Initially this feature was named Cypress Dashboard. It was originally just a uti
 
 -   Creating projects
 
-Once the user is logged in they are able to create their first project. In the **Settings** panel of the app there is a special section for **Cypress Cloud settings** where the user is provided with **Project ID** and **Record key** for the created project. To execute test using Cypress cloud **Cypress run** needs to be used, like in the following example: `npx cypress run --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c`.
+Once the user is logged in they are able to create their first project. In the **Settings** panel of the app there is a special section for **Cypress Cloud settings** where the user is provided with **Project ID** and **Record key** for the created project. To execute test using Cypress cloud **Cypress run** needs to be used, like in the following example: `npx cypress run --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c`. All detailed information about the user's projects on Cypress Cloud are displayed here: [https://on.cypress.io/cloud](https://on.cypress.io/cloud).
+
+## NPM scripts and NPX
+
+The NPX package is used to simplify the way scripts are executed. Installation is required using command `npm install -g npx`. Details and further description can be found here: [https://www.npmjs.com/package/npx](https://www.npmjs.com/package/npx).
+
+-   **Note**: NPM is the world's largest Software Registry and it is also a package manager and installer. NPM is installed with **Node.js**. The name npm (Node Package Manager) stems from when npm first was created as a package manager for Node.js. All npm packages are defined in files called package.json. The content of package.json must be written in JSON.
+
+After installing npx, cypress app can be run using command: `npx cypress open`. Npx custom scripts can be saved in the **package.json** file for easier execution of tes suites and specific tests.
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/custom-npx-script.png)
+
+To run npx script npm run command is used, for example: `npm run triggerSearchTest-chrome` and all details regarding executed tests are displayed in the bash terminal.
