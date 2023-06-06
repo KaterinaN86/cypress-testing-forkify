@@ -603,3 +603,5 @@ It is recommended practice that before pushing modified files to a repository a 
 ![Path of screenshots directory](./cypress/fixtures/readme-images/git-remote.png)
 
 -   **Note**: to verify remote repository is correctly configured use bash command `git remote -v`. If a warning or error is reported during pulling the following command is recommended: `git remote add origin *name of repo*`. When using git visual studio will create a master branch and an existing reference to the remote branch may not exist. In this case `git fetch` needs to be performed. If there is error regarding unrelated history a merge can be performed using `git pull origin master --allow-unrelated-histories`.
+
+After pulling the potential changes commit and sync can be performed using the source control options in VS Code.
