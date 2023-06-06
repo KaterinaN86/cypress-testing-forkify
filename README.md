@@ -579,3 +579,27 @@ After installing npx, cypress app can be run using command: `npx cypress open`. 
 ![Path of screenshots directory](./cypress/fixtures/readme-images/custom-npx-script.png)
 
 To run npx script npm run command is used, for example: `npm run triggerSearchTest-chrome` and all details regarding executed tests are displayed in the bash terminal.
+
+## Source control using GitHub
+
+An active GitHub account is needed to push Cypress projects on GitHub. When creating a Cypress project, the user can specify an existing repository and that information will be stored in the **package.json** file.
+
+Visual Studio Code offers source control options (Shift+Ctrl+G). If not set previously, information required by Git including username and e-mail needs to be provided. This can be configured using the bash terminal: `git config --global user.email *useremail*` followed by `git config --global user.name "*username*"`. In the IDE settings git also needs to be enabled.
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/git-enable.png)
+
+If GitHub repository has not been initialized on creation, in the source control panel there will be the option for initialization. This will load all of the files that have not been pushed to the cloud repository.
+
+-   **Note**: it is highly recommended to include the following files in the **.gitignore** file so they will be ignored on sync.
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/gitignore.png)
+
+Prior to being uploaded (pushed) to the repository, the listed files need to be committed and descriptive message needs to be provided.
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/git-commit.png)
+
+It is recommended practice that before pushing modified files to a repository a pull is completed in order to sync with possible changes in the existing repository content. In order to connect to a remote repository using the View -> Command Palette and typing Add remote will provide us with the option to add a remote Git repository. All possible options will be listed like in the image below and the corresponding needs to be selected and named:
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/git-remote.png)
+
+-   **Note**: to verify remote repository is correctly configured use bash command `git remote -v`. If a warning or error is reported during pulling the following command is recommended: `git remote add origin *name of repo*`. When using git visual studio will create a master branch and an existing reference to the remote branch may not exist. In this case `git fetch` needs to be performed. If there is error regarding unrelated history a merge can be performed using `git pull origin master --allow-unrelated-histories`.

@@ -284,6 +284,13 @@ FakesAssemblies/
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
 node_modules/
+#Screenshots and videos
+screenshots
+videos
+#reports
+results
+mochawesome-report
+package-lock.json
 
 # Visual Studio 6 build log
 *.plg
@@ -396,7 +403,3 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-
-#Screenshots and videos
-cypress/screenshots
-cypress/videos
