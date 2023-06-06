@@ -51,6 +51,8 @@ In the main panel of the Cypress App there is Settings tab on the menu. All of t
 
 ![Excluding a group of tests](./cypress/fixtures/readme-images/cypress-config-example.png)
 
+For more details on Cypress configuration access this link: [https://docs.cypress.io/guides/references/configuration](https://docs.cypress.io/guides/references/configuration).
+
 ## Project structure
 
 -   Tests (specs) can be found in directory **cypress/e2e** (formally called **integration**).
@@ -537,3 +539,31 @@ Another useful option is **trashAssetsBeforeRuns** which will delete previous sc
 Documentation with detailed explanation can be found here: [https://docs.cypress.io/api/cypress-api/screenshot-api](https://docs.cypress.io/api/cypress-api/screenshot-api).
 
 Whenever a test is executed by using the `cypress run` command a video is recorded in the **cypress/videos** directory ([https://docs.cypress.io/guides/guides/screenshots-and-videos#Videos](https://docs.cypress.io/guides/guides/screenshots-and-videos#Videos)). Various settings regarding videos and screenshots can be defined in the **cypress.config.js** file, for detailed explanation refer to: [https://docs.cypress.io/guides/references/configuration#Videos](https://docs.cypress.io/guides/references/configuration#Videos), [https://docs.cypress.io/guides/references/configuration#Screenshots](https://docs.cypress.io/guides/references/configuration#Screenshots).
+
+-   **Note**: to disable video recording and save resources during test execution the **video** property needs to be set to **false** in the **cypress.config.js** file.
+
+## Altering screen sizes and working with cookies
+
+Cypress method **viewport** can be used in order to define screen size for certain test by specifying width and height or using a preset ([https://docs.cypress.io/api/commands/viewport#Syntax](https://docs.cypress.io/api/commands/viewport#Syntax)).
+Viewport width and height can also be defined in the **cypress.config.js** file:
+
+```
+viewportHeight: 1080,
+viewportWidth: 1920,
+```
+
+-   **Note**: When 'cy.viewport()` method is used for a test or test suite the values for screen size dimensions specified in the **cypress.config.js** file will be overwritten.\
+
+### **Managing cookies**
+
+Cypress automatically clears all cookies before each test to prevent state from being shared across tests. However, there may be certain scenarios when cookies need to be cleared or need to clear local storage. Cypress provides methods for both actions, and documentation can be found here [https://docs.cypress.io/api/commands/clearcookies#Syntax](https://docs.cypress.io/api/commands/clearcookies#Syntax), [https://docs.cypress.io/api/commands/clearlocalstorage#Syntax](https://docs.cypress.io/api/commands/clearlocalstorage#Syntax).
+
+-   **Note**: A good place to call **clearCookies** and **clearLocalStorage** methods is in the **beforeEach** hook of a test suite.
+
+## Cypress Cloud (formally known as Dashboard)
+
+Initially this feature was named Cypress Dashboard. It was originally just a utility for reporting and recording tests. It works alongside the Cypress App and is basically an online portal that offers extra features for Cypress automation testing. As the Cypress app runs tests, it records its rich result data to Cypress Dashboard. Dashboard persists and mines this data to provide an enhanced local debugging workflow, powers smart orchestration for faster and more efficient CI builds, and derives a wide range of insights that measure and optimize the entire development process. To reflect the changes made to the product, it was renamed to Cypress Cloud [https://docs.cypress.io/guides/cloud/introduction](https://docs.cypress.io/guides/cloud/introduction). In conclusion, Cypress Cloud provides additional data about executed tests along with screenshots and videos making it easier to share data with other users. It also offers the possibility to run tests in parallel. Users are able to create an account for free and work with limited number of tests, with the potential to upgrade to a more professional paid version. In order to use the Cypress Cloud the user needs to login and it is preferable that the latest version of Cypress is installed.
+
+-   Creating projects
+
+Once the user is logged in they are able to create their first project. In the **Settings** panel of the app there is a special section for **Cypress Cloud settings** where the user is provided with **Project ID** and **Record key** for the created project. To execute test using Cypress cloud **Cypress run** needs to be used, like in the following example: `npx cypress run --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c`.

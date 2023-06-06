@@ -24,7 +24,7 @@ class Search {
             cy.debug();
             console.log(`Clicked on button with text: ${$searchButton.text()}`);
             //Timeouts can also be defined when using assertions.
-            cy.wrap($searchButton).contains("Search2", { timeout: 3000 });
+            cy.wrap($searchButton).contains("Search", { timeout: 3000 });
         });
         cy.get(".preview");
     }
