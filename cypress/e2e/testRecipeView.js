@@ -31,13 +31,21 @@ describe("Test recipe details view", () => {
     it("Should log message text in recipe details view and should verify length is greater than 5", () => {
         recipe.getMessageText();
     });
-    it("Should click on random recipe preview and follow directions link.", () => {
-        search.inputSearchQuery(data.searchQuery);
-        search.clickSearchButton();
-        searchResults.getCurrentPageInfo();
-        searchResults.clickRandomRecipePreview();
-        recipe.verifyDirectionsButton();
-        recipe.handleUncaughtException();
-        recipe.clickDirectionsButton();
-    });
+    it(
+        "Should click on random recipe preview and follow directions link.",
+        {
+            retries: {
+                openMode: 2,
+            },
+        },
+        () => {
+            search.inputSearchQuery(data.searchQuery);
+            search.clickSearchButton();
+            searchResults.getCurrentPageInfo();
+            searchResults.clickRandomRecipePreview();
+            recipe.verifyDirectionsButton();
+            recipe.handleUncaughtException();
+            recipe.clickDirectionsButton();
+        }
+    );
 });

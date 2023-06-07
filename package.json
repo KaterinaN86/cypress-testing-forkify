@@ -13,7 +13,18 @@
         "triggerSearchTest-chrome": "npx cypress run --spec cypress/e2e/testSearch.js --browser chrome --headed ",
         "triggerHeaderTest-chrome": "npx cypress run --spec cypress/e2e/testHeader.js --browser chrome --headed ",
         "triggerSearchResultsTest-chrome": "npx cypress run --spec cypress/e2e/testSearchResults.js --browser chrome --headed ",
-        "triggerRecipeViewTest-chrome": "npx cypress run --spec cypress/e2e/testRecipeView.js --browser chrome --headed "
+        "triggerRecipeViewTest-chrome": "npx cypress run --spec cypress/e2e/testRecipeView.js --browser chrome --headed ",
+        "triggerMultipleTests-chrome": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --browser chrome",
+        "triggerMultipleTests": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" ",
+        "junit-merge": "npx junit-merge -d cypress/results/junit -o cypress/results/junit/results.xml",
+        "delete-results-report": "rm -rf cypress/results/junit/results.xml",
+        "delete-results": "rm -rf cypress/results/*",
+        "delete-junit-results": "rm -rf cypress/results/junit/* || true",
+        "delete-mochawesome-results": "rm -rf cypress/results/mochawesome/* || true",
+        "delete-mochawesome-report": "rm -rf mochawesome-report/* || true",
+        "mochawesome-merge": "npx mochawesome-merge cypress/results/mochawesome/*.json > mochawesome.json && npx marge mochawesome.json",
+        "cypress-regression-pack": "npm run delete-results && npm run delete-mochawesome-report && npm run triggerMultipleTests-chrome && npm run mochawesome-merge",
+        "cypress-multi-browser": "npm run triggerMultipleTests -- --browser electron --headed & npm run triggerMultipleTests -- --browser edge --headed"
     },
     "repository": {
         "type": "git",
@@ -34,7 +45,10 @@
         "cypress": "^12.13.0",
         "cypress-multi-reporters": "^1.6.3",
         "cypress-xpath": "^2.0.1",
-        "mocha-junit-reporter": "^2.2.0"
+        "mocha-junit-reporter": "^2.2.0",
+        "mochawesome": "^7.1.3",
+        "mochawesome-merge": "^4.3.0",
+        "mochawesome-report-generator": "^6.2.0"
     },
     "dependencies": {
         "cypress-real-events": "^1.8.1",

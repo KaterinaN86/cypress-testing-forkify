@@ -595,6 +595,96 @@ An empty **reporter-config.json** configuration file for the reports also needs 
 
 ![Path of screenshots directory](./cypress/fixtures/readme-images/reporter-config.png)
 
+By configuring the file Cypress can now generate JUnit reports for specs executed with the `cypress run` command. It is often required to merge multiple **xml** reports into one file and a number of CI systems can generate reports using files of that type.
+
+```
+npx junit-merge -d cypress/results/junit -o cypress/results/junit/results.xml
+```
+
+-   **Note**: If junit-merge is not installed run the following command: `npm install -g junit-merge`. Custom npx scripts for merging and deleting reports can be saved in the **package.json** file.
+
+Another option for reporting is to use **Mochawesome** reporter ([https://www.npmjs.com/package/mochawesome-report-generator](https://www.npmjs.com/package/mochawesome-report-generator)). First, the necessary dependencies need to be added with following command:
+
+```
+npm install --save-dev mochawesome mochawesome-merge mochawesome-report-generator
+```
+
+Specific configuration also needs to be added to the **reporter-config.json** file:
+
+```
+{
+    "reporterEnabled": "spec, cypress-multi-reporters",
+    "mochaJunitReporterReporterOptions": {
+        "mochaFile": "cypress/results/junit/results-[hash].xml"
+    },
+    "reporterOptions": {
+        "reporterEnabled": "mochawesome",
+        "mochawesomeReporterOptions": {
+            "reportDir": "cypress/results/mochawesome",
+            "quite": true,
+            "overwrite": false,
+            "html": false,
+            "json": true
+        }
+    }
+}
+```
+
+Multiple Mochawesome reports can be merged with the following command, which will also generate an HTML report:
+
+```
+npx mochawesome-merge cypress/results/mochawesome/*.json > mochawesome.json && npx marge mochawesome.json
+```
+
+Multiple npx commands can also be merged in order to enable reset and update of reports, an example of such custom command defined in the **package.json** file is the following:
+
+```
+ "cypress-regression-pack": "npm run delete-results && npm run delete-mochawesome-report && npm run triggerMultipleTests-chrome && npm run mochawesome-merge"
+```
+
+## Working with multiple configuration files
+
+When working in different environments (development, production, testing and so on) which may require working with different URLs and data. Cypress offers the possibility of working with multiple configuration files ([https://docs.cypress.io/api/plugins/configuration-api#Switch-between-multiple-configuration-files](https://docs.cypress.io/api/plugins/configuration-api#Switch-between-multiple-configuration-files)). The documentations contains all the details of the changes that need to be made in order to organize configuration an environment variables:
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/config-file-setup.png)
+
+In order to use a certain config file when running the Cypress App, command similar to the following can be used:
+
+```
+npx cypress open --env configFile=staging
+```
+
+Different config file can be used for a specific test that can be run via the command line as well. In the following example the test will fail because of the change of baseUrl:
+
+```
+npx cypress run --spec cypress/e2e/testHeader.js --env configFile=staging --headed
+```
+
+-   **Note**: after including the **cypress/config/staging.json** file there should be some changes in the project settings displayed in the Cypress app. BaseUrl should be changed and environment variable **name** should be added.
+
+## Retry-ability
+
+Cypress enables users to allow multiple attempts per test execution. Following documentation provides details about how to enable test retries in the configuration: [https://docs.cypress.io/guides/guides/test-retries#Introduction](https://docs.cypress.io/guides/guides/test-retries#Introduction).
+
+-   **Note**: refer to the Cypress changelog for updates [https://docs.cypress.io/guides/references/changelog#5-0-0](https://docs.cypress.io/guides/references/changelog#5-0-0).
+
+In order to have two attempts for a test following configuration can be added to the **cypress.config.js** file, before the **e2e** block:
+
+```
+retries: {
+            runMode: 0,
+            openMode: 1,
+        }
+```
+
+The same logic can be specified via the **options** object that is passed when an **it** block is declared in a test suite. This will overwrite the logic in the **cypress.config.js** file.
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/test-retry-it.png)
+
+In the following image, it is visible that as result of retries configuration the test executed twice and passed on the second attempt:
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/test-retry.png)
+
 ## Source control using GitHub
 
 An active GitHub account is needed to push Cypress projects on GitHub. When creating a Cypress project, the user can specify an existing repository and that information will be stored in the **package.json** file.
@@ -621,10 +711,20 @@ It is recommended practice that before pushing modified files to a repository a 
 
 ![Path of screenshots directory](./cypress/fixtures/readme-images/git-install-cypress.png)
 
-It is often required to merge multiple **xml** reports into one file and a number of CI systems can generate reports using files of that type.
+## Cross browser testing
+
+Tests can be executed by multiple browsers by using npx scripts, like the following:
 
 ```
-npx junit-merge -d cypress/results/junit -o cypress/results/junit/results.xml
+ "cypress-multi-browser": "npm run triggerMultipleTests -- --browser electron --headed & npm run triggerMultipleTests -- --browser edge --headed"
 ```
 
--   **Note**: if junit-merge is not installed run the following command: `npm install -g junit-merge`.
+Browsers can be specified by passing a matcher ([https://docs.cypress.io/api/cypress-api/isbrowser#Arguments](https://docs.cypress.io/api/cypress-api/isbrowser#Arguments)) to the test or test suite within the test configuration. In that case, the specific test will only run in the corresponding browser ([https://docs.cypress.io/guides/guides/cross-browser-testing#Running-Specific-Tests-by-Browser](https://docs.cypress.io/guides/guides/cross-browser-testing#Running-Specific-Tests-by-Browser)).
+
+**Matchers** can also be used inside the logic of a specific test, for example by using an if statement:
+
+```
+if(Cypress.isBrowser('firefox')){
+...
+}
+```
