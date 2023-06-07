@@ -580,6 +580,21 @@ After installing npx, cypress app can be run using command: `npx cypress open`. 
 
 To run npx script npm run command is used, for example: `npm run triggerSearchTest-chrome` and all details regarding executed tests are displayed in the bash terminal.
 
+## Reporting
+
+Besides the detailed data for executed tests presented in the Cypress Cloud, Cypress offers support for using multiple reporters ([https://docs.cypress.io/guides/tooling/reporters#Multiple-reporters](https://docs.cypress.io/guides/tooling/reporters#Multiple-reporters)) that generate reports in various formats like: json, xml, html that can later be used by a CI system. For example, following command can be used to enable generating Mocha JUnit reports: `npm install --save-dev cypress-multi-reporters mocha-junit-reporter`. This will add the relevant **devDependencies** in the **package.json** file. The following configuration also needs to be added in the **cypress.config.js** file, before the **e2e** block:
+
+```
+ reporter: "cypress-multi-reporters",
+    reporterOptions: {
+        configFile: "reporter-config.json",
+    },
+```
+
+An empty **reporter-config.json** configuration file for the reports also needs to be created in the root directory, containing the following configuration:
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/reporter-config.png)
+
 ## Source control using GitHub
 
 An active GitHub account is needed to push Cypress projects on GitHub. When creating a Cypress project, the user can specify an existing repository and that information will be stored in the **package.json** file.
@@ -605,3 +620,11 @@ It is recommended practice that before pushing modified files to a repository a 
 -   **Note**: to verify remote repository is correctly configured use bash command `git remote -v`. If a warning or error is reported during pulling the following command is recommended: `git remote add origin *name of repo*`. When using git visual studio will create a master branch and an existing reference to the remote branch may not exist. In this case `git fetch` needs to be performed. If there is error regarding unrelated history a merge can be performed using `git pull origin master --allow-unrelated-histories`. After pulling the potential changes commit and sync can be performed using the source control options in VS Code. A GitHub Cypress app is also available ([https://github.com/apps/cypress](https://github.com/apps/cypress)) and can be connected to a specified repository:
 
 ![Path of screenshots directory](./cypress/fixtures/readme-images/git-install-cypress.png)
+
+It is often required to merge multiple **xml** reports into one file and a number of CI systems can generate reports using files of that type.
+
+```
+npx junit-merge -d cypress/results/junit -o cypress/results/junit/results.xml
+```
+
+-   **Note**: if junit-merge is not installed run the following command: `npm install -g junit-merge`.
