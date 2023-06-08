@@ -728,3 +728,17 @@ if(Cypress.isBrowser('firefox')){
 ...
 }
 ```
+
+## Automated testing using Jenkins and CI
+
+Jenkins is a free open source automation server. jenkins aids the process of automating different parts of the software development life cycle, such as: building, testing, deploying and facilitating continuous integration and continuous delivery. A platform can be setup to easily trigger automated tests by using Jenkins. It comes bundled with various plugins and repeatable build jobs (Jenkins projects) containing several steps and post build actions can be created to trigger tests. A build is performed every time a job is triggered and there are logs available for each build. For detailed info regarding requirements to use Jenkins, refer to this link [https://www.jenkins.io/doc/administration/requirements/java/](https://www.jenkins.io/doc/administration/requirements/java/).
+
+In order to install Jenkins the corresponding JDK also needs to be installed ([https://www.jenkins.io/doc/administration/requirements/java/](https://www.jenkins.io/doc/administration/requirements/java/)). Details for Jenkins installation and download can be found here [https://www.jenkins.io/download/](https://www.jenkins.io/download/).
+
+To add the required plugins the **Manage Plugins** panel is used, which can be accessed from Jenkins Dashboard -> Manage Jenkins. Required plugins include: GitHub Integration and GitHub Authentication, NodeJS and Green Balls. Installed plugins then need to be configured using the Jenkins **Global Tool Configuration** panel. The JDK needs to be named and a path to JAVA_HOME needs to be provided. Git plug in also needs to be provided with the path where git has been installed.
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/jenkins-jdk.png)
+
+Node is installed automatically and only needs to be provided with a name.
+
+After creating a Jenkins job (Freestyle Project) GitHub url to the repository and GitHub credentials need to be provided.
