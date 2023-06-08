@@ -15,6 +15,7 @@
         "triggerSearchResultsTest-chrome": "npx cypress run --spec cypress/e2e/testSearchResults.js --browser chrome",
         "triggerRecipeViewTest-chrome": "npx cypress run --spec cypress/e2e/testRecipeView.js --browser chrome",
         "triggerMultipleTests-chrome": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --browser chrome",
+        "triggerMultipleTests-dashboard": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c --browser chrome",
         "triggerMultipleTests": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" ",
         "junit-merge": "npx junit-merge -d cypress/results/junit -o cypress/results/junit/results.xml",
         "delete-results-report": "rm -rf cypress/results/junit/results.xml",
