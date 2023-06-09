@@ -1,58 +1,59 @@
 {
-    "name": "cypress-testing-forkify",
-    "version": "1.0.0",
-    "description": "testing Forkify demo site with cypress automation framework",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "cypress:open": "cypress open",
-        "triggerAllTests-headless": "npx cypress run",
-        "triggerAllTests-headed": "npx cypress run --headed",
-        "triggerAllTests-chrome": "npx cypress run --browser chrome",
-        "triggerAllTests-dashboard": "npx cypress run --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c",
-        "triggerSearchTest-chrome": "npx cypress run --spec cypress/e2e/testSearch.js --browser chrome",
-        "triggerHeaderTest-chrome": "npx cypress run --spec cypress/e2e/testHeader.js --browser chrome",
-        "triggerSearchResultsTest-chrome": "npx cypress run --spec cypress/e2e/testSearchResults.js --browser chrome",
-        "triggerRecipeViewTest-chrome": "npx cypress run --spec cypress/e2e/testRecipeView.js --browser chrome",
-        "triggerMultipleTests-chrome": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --browser chrome",
-        "triggerMultipleTests-dashboard": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c --browser chrome",
-        "triggerMultipleTests": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" ",
-        "junit-merge": "npx junit-merge -d cypress/results/junit -o cypress/results/junit/results.xml",
-        "delete-results-report": "rm -rf cypress/results/junit/results.xml",
-        "delete-results": "rm -rf cypress/results/*",
-        "delete-junit-results": "rm -rf cypress/results/junit/* || true",
-        "delete-mochawesome-results": "rm -rf cypress/results/mochawesome/* || true",
-        "delete-mochawesome-report": "rm -rf mochawesome-report/* || true",
-        "mochawesome-merge": "npx mochawesome-merge cypress/results/mochawesome/*.json > mochawesome.json && npx marge mochawesome.json",
-        "cypress-regression-pack": "npm run delete-results && npm run delete-mochawesome-report && npm run triggerMultipleTests-chrome && npm run mochawesome-merge",
-        "cypress-multi-browser": "npm run triggerMultipleTests -- --browser electron --headed & npm run triggerMultipleTests -- --browser edge --headed"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/KaterinaN86/cypress-testing-forkify.git"
-    },
-    "keywords": [
-        "cypress",
-        "javaScript",
-        "forkify"
-    ],
-    "author": "Katerina Naumova",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/KaterinaN86/cypress-testing-forkify/issues"
-    },
-    "homepage": "https://github.com/KaterinaN86/cypress-testing-forkify#readme",
-    "devDependencies": {
-        "cypress": "^12.13.0",
-        "cypress-multi-reporters": "^1.6.3",
-        "cypress-xpath": "^2.0.1",
-        "mocha-junit-reporter": "^2.2.0",
-        "mochawesome": "^7.1.3",
-        "mochawesome-merge": "^4.3.0",
-        "mochawesome-report-generator": "^6.2.0"
-    },
-    "dependencies": {
-        "cypress-real-events": "^1.8.1",
-        "junit-merge": "^2.0.0"
-    }
+  "name": "cypress-testing-forkify",
+  "version": "1.0.0",
+  "description": "testing Forkify demo site with cypress automation framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open",
+    "triggerAllTests-headless": "npx cypress run",
+    "triggerAllTests-headed": "npx cypress run --headed",
+    "triggerAllTests-chrome": "npx cypress run --browser chrome",
+    "triggerAllTests-dashboard": "npx cypress run --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c",
+    "triggerSearchTest-chrome": "npx cypress run --spec cypress/e2e/testSearch.js --browser chrome",
+    "triggerHeaderTest-chrome": "npx cypress run --spec cypress/e2e/testHeader.js --browser chrome",
+    "triggerSearchResultsTest-chrome": "npx cypress run --spec cypress/e2e/testSearchResults.js --browser chrome",
+    "triggerRecipeViewTest-chrome": "npx cypress run --spec cypress/e2e/testRecipeView.js --browser chrome",
+    "triggerMultipleTests-chrome": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --browser chrome",
+    "triggerMultipleTests-dashboard": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c --browser chrome",
+    "triggerMultipleTests": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" ",
+    "junit-merge": "npx junit-merge -d cypress/results/junit -o cypress/results/junit/results.xml",
+    "delete-results-report": "rm -rf cypress/results/junit/results.xml",
+    "delete-results": "rm -rf cypress/results/*",
+    "delete-junit-results": "rm -rf cypress/results/junit/* || true",
+    "delete-mochawesome-results": "rm -rf cypress/results/mochawesome/* || true",
+    "delete-mochawesome-report": "rm -rf mochawesome-report/* || true",
+    "mochawesome-merge": "npx mochawesome-merge cypress/results/mochawesome/*.json > mochawesome.json && npx marge mochawesome.json",
+    "cypress-regression-pack": "npm run delete-results && npm run delete-mochawesome-report && npm run triggerMultipleTests-chrome && npm run mochawesome-merge",
+    "cypress-multi-browser": "npm run triggerMultipleTests -- --browser electron --headed & npm run triggerMultipleTests -- --browser edge --headed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaterinaN86/cypress-testing-forkify.git"
+  },
+  "keywords": [
+    "cypress",
+    "javaScript",
+    "forkify"
+  ],
+  "author": "Katerina Naumova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaterinaN86/cypress-testing-forkify/issues"
+  },
+  "homepage": "https://github.com/KaterinaN86/cypress-testing-forkify#readme",
+  "devDependencies": {
+    "cypress": "^12.13.0",
+    "cypress-multi-reporters": "^1.6.3",
+    "cypress-xpath": "^2.0.1",
+    "mocha-junit-reporter": "^2.2.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0"
+  },
+  "dependencies": {
+    "cypress-real-events": "^1.8.1",
+    "junit-merge": "^2.0.0",
+    "@shelex/cypress-allure-plugin": "2.40.0"
+  }
 }
