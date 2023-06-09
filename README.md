@@ -742,3 +742,11 @@ To add the required plugins the **Manage Plugins** panel is used, which can be a
 Node is installed automatically and only needs to be provided with a name.
 
 After creating a Jenkins job (Freestyle Project) GitHub url to the repository and GitHub credentials need to be provided.
+
+## Parallelization ([https://docs.cypress.io/guides/guides/parallelization#Overview](https://docs.cypress.io/guides/guides/parallelization#Overview))
+
+Running tests in parallel and ideally on multiple machines offers advantage when executing a greater number of tests. If the tests are run one by one on a single machine it may take long time and too many resources for the tests to execute efficiently. The greater the infrastructure of machines running a group of tests the faster the execution because Cypress will automatically balance the workload across multiple machines. Cypress Cloud offers a free plan that enables basic services and one of them is running tests in parallel. Tests can run in parallel by adding `--parallel` to our script and it is important to note that the dashboard has to be used in order to enable parallelization.
+
+```
+triggerMultipleTests-dashboard": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c --parallel --browser chrome".
+```
