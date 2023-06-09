@@ -1,4 +1,4 @@
-import homePage from "../pages/HomePage.js";
+import homePage from "../../pages/HomePage.js";
 
 /// <reference types="Cypress" />
 describe("Test home page", () => {
