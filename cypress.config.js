@@ -3,8 +3,6 @@ const { defineConfig } = require('cypress');
 //This section is added in order to enable working with multiple configuration files.
 const fs = require('fs-extra');
 const path = require('path');
-// https://github.com/bahmutov/cypress-split
-const cypressSplit = require('cypress-split');
 
 function getConfigurationByFile(file) {
   //'\\' is used because of path definition in node.js (https://nodejs.org/api/path.html)
@@ -25,13 +23,10 @@ module.exports = defineConfig({
   },
   e2e: {
     setupNodeEvents(on, config) {
-      // If the specified config file exists it will be used otherwise empty space is used as a name for the config file by default.
+      // implement node event listeners here
       const file = config.env.configFile || '';
 
-      config = getConfigurationByFile(file);
-      cypressSplit(on, config);
-      // IMPORTANT: return the config object
-      return config;
+      return getConfigurationByFile(file);
     },
     //Setting that defines the type of files that are considered as specs (tests).
     specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx,feature}',
