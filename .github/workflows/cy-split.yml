@@ -34,7 +34,7 @@ jobs:
         uses: cypress-io/github-action@v5
         # using operating system process environment variables
         env:
-          SPEC: 'cypress/e2e/add-recipe.js,cypress/e2e/dropdown-examples/selection-index.js,cypress/e2e/testHeader.js,cypress/e2e/dropdown-examples/selection-text.js,cypress/e2e/testHomePage.js,cypress/e2e/search-recipe.js,cypress/e2e/testSearchResults.js,cypress/e2e/dropdown-examples/selection-value.js,cypress/e2e/testSearch.js'
+          SPEC: 'cypress/e2e/add-recipe.js,cypress/e2e/examples/traversing-elements.js,cypress/e2e/testHeader.js,cypress/e2e/examples/datepicker.js,cypress/e2e/testHomePage.js,cypress/e2e/search-recipe.js,cypress/e2e/testSearchResults.js,cypress/e2e/examples/mouse-actions.js,cypress/e2e/testSearch.js'
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
 
