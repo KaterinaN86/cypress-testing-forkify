@@ -38,26 +38,26 @@ jobs:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
 
-  # test-split:
-  #   needs: prepare
-  #   runs-on: ubuntu-20.04
-  #   strategy:
-  #     fail-fast: false
-  #     matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
-  #   steps:
-  #     - name: Checkout 🛎
-  #       uses: actions/checkout@v3
+  test-split:
+    needs: prepare
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
 
-  #     - name: Print GitHub variables 🖨
-  #       run: npx @bahmutov/print-env GITHUB
+      - name: Print GitHub variables 🖨
+        run: npx @bahmutov/print-env GITHUB
 
-  #     - name: Print GitHub strategy context 🖨
-  #       run: echo '${{ toJSON(strategy) }}'
+      - name: Print GitHub strategy context 🖨
+        run: echo '${{ toJSON(strategy) }}'
 
-  #     - name: Run split Cypress tests 🧪
-  #       # https://github.com/cypress-io/github-action
-  #       uses: cypress-io/github-action@v5
-  #       # using operating system process environment variables
-  #       env:
-  #         SPLIT: ${{ strategy.job-total }}
-  #         SPLIT_INDEX: ${{ strategy.job-index }}
+      - name: Run split Cypress tests 🧪
+        # https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v5
+        # using operating system process environment variables
+        env:
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}

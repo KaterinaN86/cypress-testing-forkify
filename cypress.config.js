@@ -25,14 +25,12 @@ module.exports = defineConfig({
   },
   e2e: {
     setupNodeEvents(on, config) {
-      const cySplit = config.env.cypressSplit || '';
-      if (cySplit === 'true') {
-        cypressSplit(on, config);
-        return config;
-      }
       // implement node event listeners here
       const file = config.env.configFile || '';
-      return getConfigurationByFile(file);
+      if (file !== '') return getConfigurationByFile(file);
+
+      cypressSplit(on, config);
+      return config;
     },
     //Setting that defines the type of files that are considered as specs (tests).
     specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx,feature}',
