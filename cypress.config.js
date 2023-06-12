@@ -27,10 +27,13 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
       const file = config.env.configFile || '';
-      //if (file !== '') return getConfigurationByFile(file);
 
-      cypressSplit(on, config);
-      //return config;
+      //Add this if block to work with cypress-split plugin.
+      if (file === '') {
+        cypressSplit(on, config);
+        return config;
+      }
+
       return getConfigurationByFile(file);
     },
     //Setting that defines the type of files that are considered as specs (tests).
