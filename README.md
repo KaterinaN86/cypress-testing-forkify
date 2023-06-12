@@ -735,13 +735,24 @@ Jenkins is a free open source automation server. jenkins aids the process of aut
 
 In order to install Jenkins the corresponding JDK also needs to be installed ([https://www.jenkins.io/doc/administration/requirements/java/](https://www.jenkins.io/doc/administration/requirements/java/)). Details for Jenkins installation and download can be found here [https://www.jenkins.io/download/](https://www.jenkins.io/download/).
 
-To add the required plugins the **Manage Plugins** panel is used, which can be accessed from Jenkins Dashboard -> Manage Jenkins. Required plugins include: GitHub Integration and GitHub Authentication, NodeJS and Green Balls. Installed plugins then need to be configured using the Jenkins **Global Tool Configuration** panel. The JDK needs to be named and a path to JAVA_HOME needs to be provided. Git plug in also needs to be provided with the path where git has been installed.
+To add the required plugins the **Manage Plugins** panel is used, which can be accessed from Jenkins Dashboard -> Manage Jenkins. Required plugins include: GitHub Integration and GitHub Authentication, NodeJS and Green Balls. Installed plugins then need to be configured using the Jenkins **Global Tool Configuration** panel. The JDK needs to be named and a path to JAVA_HOME needs to be provided (example: `/usr/lib/jvm/java-17-openjdk-amd64`). Git plug in also needs to be provided with the path where git has been installed (example: `/usr/bin/git`).
 
-![Path of screenshots directory](./cypress/fixtures/readme-images/jenkins-jdk.png)
+![Path to jdk plugin in jenkins](./cypress/fixtures/readme-images/jenkins-jdk.png)
 
-Node is installed automatically and only needs to be provided with a name.
+Node is installed automatically and only needs to be provided with a name. It is important to choose a version that supports Cypress. In this section packages that will be globally installed can also be specified.
 
-After creating a Jenkins job (Freestyle Project) GitHub url to the repository and GitHub credentials need to be provided.
+![Path  to nodejs in Jenkins](./cypress/fixtures/readme-images/jenkins-nodejs-plugin.png)
+
+After creating a Jenkins job (Freestyle Project) GitHub url to the repository and GitHub credentials need to be provided, in this case `cypress mocha mochawesome`.
+After setting up necessary plugins new freestyle project can be added to Jenkins. For example, project **Cypress Automation Framework is crated**. The names of the scripts that can ne executed are listed as parameters for this Jenkins job. A link to the GitHub repository and corresponding branch also need to be specified. Option `Provide Node & npm bin/ folder to PATH` also needs to be enabled as well as `Color ANSI Console Output` and `xterm` chosen as ANSI color map (this option will only be available after installing AnsiColor plugin[https://plugins.jenkins.io/ansicolor/](https://plugins.jenkins.io/ansicolor/)).
+
+Two shell scripts also need to be added in the **Build Steps** section, one for installing necessary packages and the other one to call previously defined `Script` choice parameter:
+
+![Jenkins shell scripts](./cypress/fixtures/readme-images/jenkins-shell-scripts.png)
+
+After building this job, console output, with summary similar to the one in the image below, will be generated:
+
+![Jenkins build console output](./cypress/fixtures/readme-images/jenkins-freestyle-job-output.png)
 
 ## Parallelization ([https://docs.cypress.io/guides/guides/parallelization#Overview](https://docs.cypress.io/guides/guides/parallelization#Overview))
 
@@ -753,6 +764,46 @@ triggerMultipleTests-dashboard": "npx cypress run --spec \"cypress/e2e/testHeade
 
 Parallelization can be achieved with the help of Jenkins server, where additional agents can be configured in order to divide the workload.
 
+Another way to run Cypress tests is to use Jenkins Pipeline job, similar to the following:
+
+```
+pipeline {
+    agent any
+tools{
+    nodejs 'node'
+}
+    stages {
+        stage('Hello') {
+            steps {
+                sh 'npm version'
+            }
+        }
+         stage('clone'){
+            steps{
+                git branch: 'master', credentialsId: 'my_credentials', url: "https://github.com/KaterinaN86/cypress-testing-forkify.git"
+            }
+        }
+        stage('list project files'){
+            steps{
+                sh 'ls'
+            }
+        }
+        stage('run test'){
+            steps{
+                sh 'npm install'
+                sh 'unset DISPLAY && npm run triggerMultipleTests-chrome'
+            }
+        }
+    }
+}
+
+```
+
 ## Running tests in parallel without using Cypress Cloud
 
 1. **GitHub actions** - a feature in GitHub that enables creating automated software development lifecycle **workflows** (list of stages) triggered by different types of **events**. This feature can be used as a CI/CD tool and the listed stages are very similar to Jenkins jobs for example. Workflows are defined in the **.github/workflows** directory of a project. Workflow files are written in **yml** format.
+   Adding a workflow is simply done by using GitHub's **Actions** from the menu, and then choose: **New workflow** and **set up a workflow yourself**.
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/create-own-workflow.png)
+
+The needed **.yml** files with a list of jobs can be added here and after the project is synced with the repository depending on the defined trigger event Cypress tests will be executed in parallel automatically. To learn more about Cypress and GitHub actions refer to documentation: [https://docs.cypress.io/guides/continuous-integration/github-actions](https://docs.cypress.io/guides/continuous-integration/github-actions).
