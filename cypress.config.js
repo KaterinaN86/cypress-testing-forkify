@@ -3,6 +3,7 @@ const { defineConfig } = require('cypress');
 //This section is added in order to enable working with multiple configuration files.
 const fs = require('fs-extra');
 const path = require('path');
+const { cloudPlugin } = require('cypress-cloud/plugin');
 
 function getConfigurationByFile(file) {
   //'\\' is used because of path definition in node.js (https://nodejs.org/api/path.html)
@@ -25,6 +26,12 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
       const file = config.env.configFile || '';
+
+      const useCouldPlugin = config.env.couldPlugin || '';
+
+      if (useCouldPlugin === 'true') {
+        return cloudPlugin(on, config);
+      }
 
       return getConfigurationByFile(file);
     },

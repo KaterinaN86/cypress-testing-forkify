@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/KaterinaN86/cypress-testing-forkify#readme",
   "devDependencies": {
-    "cypress": "^12.13.0",
+    "cypress": "^12.14.0",
     "cypress-multi-reporters": "^1.6.3",
     "cypress-on-fix": "^1.0.2",
     "cypress-parallel": "^0.13.0",
@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@shelex/cypress-allure-plugin": "2.40.0",
+    "cypress-cloud": "^1.7.4",
     "cypress-real-events": "^1.8.1",
     "junit-merge": "^2.0.0"
   }
