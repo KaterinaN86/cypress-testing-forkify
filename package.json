@@ -27,7 +27,8 @@
     "cypress-regression-pack": "npm run delete-results && npm run delete-mochawesome-report && npm run triggerMultipleTests-chrome && npm run mochawesome-merge",
     "cypress-multi-browser": "npm run triggerMultipleTests -- --browser electron --headed & npm run triggerMultipleTests -- --browser edge --headed",
     "cy:parallel": "cypress-parallel -s cy:run -t 2 -d 'cypress/e2e/parallel-tests' ",
-    "cy:streamline": "npx cypress run --spec \"cypress/e2e/parallel-tests/*.js\" --browser chrome --headed"
+    "cy:streamline": "npx cypress run --spec \"cypress/e2e/parallel-tests/*.js\" --browser chrome --headed",
+    "cy:split": "npx cypress run --env cySplit=true,split=4"
   },
   "repository": {
     "type": "git",
@@ -57,9 +58,8 @@
     "mochawesome-report-generator": "^6.2.0"
   },
   "dependencies": {
-    "@shelex/cypress-allure-plugin": "2.40.0",
-    "cypress-cloud": "^1.7.4",
     "cypress-real-events": "^1.8.1",
-    "junit-merge": "^2.0.0"
+    "junit-merge": "^2.0.0",
+    "cypress-split": "^1.2.0"
   }
 }
