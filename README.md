@@ -744,7 +744,7 @@ Node is installed automatically and only needs to be provided with a name. It is
 ![Path  to nodejs in Jenkins](./cypress/fixtures/readme-images/jenkins-nodejs-plugin.png)
 
 After creating a Jenkins job (Freestyle Project) GitHub url to the repository and GitHub credentials need to be provided, in this case `cypress mocha mochawesome`.
-After setting up necessary plugins new freestyle project can be added to Jenkins. For example, project **Cypress Automation Framework is crated**. The names of the scripts that can ne executed are listed as parameters for this Jenkins job. A link to the GitHub repository and corresponding branch also need to be specified. Option `Provide Node & npm bin/ folder to PATH` also needs to be enabled as well as `Color ANSI Console Output` and `xterm` chosen as ANSI color map (this option will only be available after installing AnsiColor plugin[https://plugins.jenkins.io/ansicolor/](https://plugins.jenkins.io/ansicolor/)).
+After setting up necessary plugins new freestyle project can be added to Jenkins. For example, project **Cypress Automation Framework is crated**. The names of the scripts that can ne executed are listed as parameters for this Jenkins job. A link to the GitHub repository and corresponding branch also need to be specified. Option `Provide Node & npm bin/ folder to PATH` also needs to be enabled as well as `Color ANSI Console Output` and `xterm` chosen as ANSI color map (this option will only be available after installing AnsiColor plugin ([https://plugins.jenkins.io/ansicolor/](https://plugins.jenkins.io/ansicolor/), [https://www.youtube.com/watch?v=g0l-d72aOd0](https://www.youtube.com/watch?v=g0l-d72aOd0)).
 
 Two shell scripts also need to be added in the **Build Steps** section, one for installing necessary packages and the other one to call previously defined `Script` choice parameter:
 
@@ -754,21 +754,14 @@ After building this job, console output, with summary similar to the one in the 
 
 ![Jenkins build console output](./cypress/fixtures/readme-images/jenkins-freestyle-job-output.png)
 
-## Parallelization ([https://docs.cypress.io/guides/guides/parallelization#Overview](https://docs.cypress.io/guides/guides/parallelization#Overview))
-
-Running tests in parallel and ideally on multiple machines offers advantage when executing a greater number of tests. If the tests are run one by one on a single machine it may take long time and too many resources for the tests to execute efficiently. The greater the infrastructure of machines running a group of tests the faster the execution because Cypress will automatically balance the workload across multiple machines. Cypress Cloud offers a free plan that enables basic services and one of them is running tests in parallel. Tests can run in parallel by adding `--parallel` to our script and it is important to note that the dashboard has to be used in order to enable parallelization.
-
-```
-triggerMultipleTests-dashboard": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c --parallel --browser chrome".
-```
-
-Parallelization can be achieved with the help of Jenkins server, where additional agents can be configured in order to divide the workload.
-
 Another way to run Cypress tests is to use Jenkins Pipeline job, similar to the following:
 
 ```
 pipeline {
     agent any
+    options{
+        ansiColor('xterm')
+    }
 tools{
     nodejs 'node'
 }
@@ -796,10 +789,19 @@ tools{
         }
     }
 }
-
 ```
 
-## Running tests in parallel without using Cypress Cloud
+## Parallelization ([https://docs.cypress.io/guides/guides/parallelization#Overview](https://docs.cypress.io/guides/guides/parallelization#Overview))
+
+Running tests in parallel and ideally on multiple machines offers advantage when executing a greater number of tests. If the tests are run one by one on a single machine it may take long time and too many resources for the tests to execute efficiently. The greater the infrastructure of machines running a group of tests the faster the execution because Cypress will automatically balance the workload across multiple machines. Cypress Cloud offers a free plan that enables basic services and one of them is running tests in parallel. Tests can run in parallel by adding `--parallel` to our script and it is important to note that the dashboard has to be used in order to enable parallelization.
+
+```
+triggerMultipleTests-dashboard": "npx cypress run --spec \"cypress/e2e/testHeader.js,cypress/e2e/testSearch.js,cypress/e2e/testSearchResults.js\" --record --key e52d4ad0-b819-4122-8098-c3a54643aa3c --parallel --browser chrome".
+```
+
+Parallelization can be achieved with the help of Jenkins server, where additional agents can be configured in order to divide the workload.
+
+## Running tests in parallel without using Cypress Cloud ([https://www.browserstack.com/guide/run-cypress-tests-in-parallel-without-dashboard](https://www.browserstack.com/guide/run-cypress-tests-in-parallel-without-dashboard))
 
 1. **GitHub actions** - a feature in GitHub that enables creating automated software development lifecycle **workflows** (list of stages) triggered by different types of **events**. This feature can be used as a CI/CD tool and the listed stages are very similar to Jenkins jobs for example. Workflows are defined in the **.github/workflows** directory of a project. Workflow files are written in **yml** format.
    Adding a workflow is simply done by using GitHub's **Actions** from the menu, and then choose: **New workflow** and **set up a workflow yourself**.
@@ -807,3 +809,20 @@ tools{
 ![Path of screenshots directory](./cypress/fixtures/readme-images/create-own-workflow.png)
 
 The needed **.yml** files with a list of jobs can be added here and after the project is synced with the repository depending on the defined trigger event Cypress tests will be executed in parallel automatically. To learn more about Cypress and GitHub actions refer to documentation: [https://docs.cypress.io/guides/continuous-integration/github-actions](https://docs.cypress.io/guides/continuous-integration/github-actions).
+
+In this project, two **yml** files are added in order to define different workflows.
+
+- In the **.github/workflows/main.yml** file two containers are defined and script **./parallel-run.js** is used to enable test execution. Workflow on is triggered whenever push action has been performed to the GitHub repository.
+- Plugin **cypres-split** ([https://github.com/bahmutov/cypress-split](https://github.com/bahmutov/cypress-split)) is used in the **cy-split.yml** file. Workload of running tests specified in environment variable **SPEC** is divided between three containers. Push is also the event that triggers execution. When the workflow is completed, summary results are displayed on GitHub Actions:
+
+![Path of screenshots directory](./cypress/fixtures/readme-images/cypress-split.png)
+
+2.  **Cypress parallel** npm plugin ([https://www.browserstack.com/guide/run-cypress-tests-in-parallel-without-dashboard/cypress-parallel](https://www.browserstack.com/guide/run-cypress-tests-in-parallel-without-dashboard#:~:text=cypress%2Dsplit-,Method%201%3A%20Using%20cypress%2Dparallel,-You%20need%20to))
+
+By using this plugin cypress tests can be executed in parallel. It can be easily installed with command: `npm i cypress-parallel`. To run tests in the **cypress/e2e/parallel-tests** directory using 2 containers in parallel, in the **./cypress/package.json** file custom command is created:
+
+```
+ "cy:parallel": "cypress-parallel -s cy:run -t 2 -d 'cypress/e2e/parallel-tests' ",
+```
+
+- **Note**: cy:run is also a custom command previously defined in the same file: `"cy:run": "cypress run --browser chrome --headed"`.

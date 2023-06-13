@@ -4,7 +4,7 @@
   "passes": 2,
   "pending": 0,
   "failures": 0,
-  "start": "2023-06-11T20:03:50.105Z",
-  "duration": 4365,
+  "start": "2023-06-13T09:38:15.611Z",
+  "duration": 5534,
   "file": "cypress\\e2e\\parallel-tests\\testSearch.js"
 }
