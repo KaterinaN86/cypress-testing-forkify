@@ -285,10 +285,10 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 #Screenshots and videos
-screenshots
-videos
+cypress/screenshots
+cypress/videos
 #reports
-results
+cypress/results
 mochawesome-report
 package-lock.json
 

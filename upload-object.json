@@ -1,0 +1,16 @@
+{
+  "publisher": "MY_TEST",
+  "ingredients": [
+    {
+      "quantity": 3,
+      "unit": "",
+      "description": "lb of cooked chicken meat* coarsely chopped"
+    },
+    { "quantity": 2, "unit": "", "description": "stalks celery chopped" }
+  ],
+  "source_url": "http://www.simplyrecipes.com/recipes/chicken_salad/",
+  "image_url": "http://forkify-api.herokuapp.com/images/chickensalad5202300x200b7d86a9d.jpg",
+  "title": "MY_TEST",
+  "servings": 4,
+  "cooking_time": 75
+}

@@ -21,9 +21,15 @@
 
 1.  Root project directory **cypress-testing-forkify** is created. This test project was built by using **Visual Studio Code** IDE which also needs to be installed.
 2.  Initializing **package.json** file by using the following command via **Git Bash** terminal (Terminal -> New Terminal -> Select Bash on bottom right): `npm init`.
-3.  Install cypress framework using this command: `npm install --save-dev cypress@12.13.0`. This will add **node_modules** directory in the project root directory. When copying this project this directory doesn't have to be transferred together with project content because it can easily be added in the same manner as described above.
+3.  Install cypress framework using this command:
 
-    - **Note:** Install latest version, it doesn't match the one in [https://www.udemy.com/course/cypress-io-master-class](https://www.udemy.com/course/cypress-io-master-class) but course is still easy to follow.
+```bash
+npm install cypress --save-dev
+```
+
+This will add **node_modules** directory in the project root directory. When copying this project this directory doesn't have to be transferred together with project content because it can easily be added in the same manner as described above.
+
+- **Note:** Install latest version, it doesn't match the one in [https://www.udemy.com/course/cypress-io-master-class](https://www.udemy.com/course/cypress-io-master-class) but course is still easy to follow.
 
 4.  Running **Cypress App**: `./node_modules/.bin/cypress open`. This will start cypress-automation-framework (master) page where we can select E2E tests from available two options. Selecting it will add all necessary configuration files. We can select to start the test runner with chrome tests and then create example specs (tests). In our project directory, this will add the cypress directory where we can find the specs in the e2e directory. Following Version 10, Cypress test runner is called the **Cypress App**. Cypress app provides easy way to execute tests, each file displayed on the app’s UI is a test, and can be run in the Cypress App by simply clicking on it.
 
@@ -35,13 +41,15 @@
 
 5. Overriding default settings
 
-   Default settings can be overridden by editing the - **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension we need to modify file: **cypress.config.js** by adding line:
+   Default settings can be overridden by specifying accepted file types in the **cypress.config.js** file.
 
-   ```
-     specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
-   ```
+- **Note:** In the example tests/specs the extension **cy.js** is used. To use another extension, modify file: **cypress.config.js** by adding line:
 
-   The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block. In this file settings regarding timeouts can also be defined.
+  ```
+    specPattern:"cypress/e2e/**/*.{js,jsx,ts,tsx,feature}"
+  ```
+
+  The stars are wild cards (any folder \*_, any file _). We add this line to the e2e block. In this file settings regarding timeouts can also be defined.
 
 In the main panel of the Cypress App there is Settings tab on the menu. All of the settings that can be modified are displayed here, and the ones that have been changed are highlighted as shown in the image below:
 
@@ -826,3 +834,12 @@ By using this plugin cypress tests can be executed in parallel. It can be easily
 ```
 
 - **Note**: cy:run is also a custom command previously defined in the same file: `"cy:run": "cypress run --browser chrome --headed"`.
+
+## Cypress API testing
+
+Cypress UI tests perform 'test actions' via the browser, mimicking user actions and in the process multiple API calls can be sent back and forth between client and server. Cypress also provides the ability to extract data from the server's database, which can be pumped into Cypress Automation Framework and used as test data instead of depending on fixed data sets. Cypress can also intercept API calls. Instead of relying on the backend server, mock responses can be used to increase the speed of test execution.
+
+- **Note**: For this section basic knowledge of JSON is required [https://www.w3schools.com/js/js_json_intro.asp](https://www.w3schools.com/js/js_json_intro.asp). Application **Postman** also needs to be installed [https://www.postman.com/api-platform/](https://www.postman.com/api-platform/). GitHub repository [JSONServer](https://github.com/qauni/json-server) also needs to be cloned.
+
+After opening the project in VS Code, json-server dependencies also need to be installed using the bash terminal: `npm install -g json-server`. This given JSON server uses a JSON file as a database (**./db.json**). Tp run JSON server on [http://localhost:3000/](http://localhost:3000/), use command: `json-server --watch db.json`. On the server's homepage there are links to the posts, comments and profile pages. Any change made in the **./db.json** file will be reflected on the server automatically.
+After JSON server is running Postman can be used to communicate with endpoints directly without interacting with the UI. For example, to access data for post with id value of 2, the **GET** method needs to be used in a new HTTP request with URL: ``

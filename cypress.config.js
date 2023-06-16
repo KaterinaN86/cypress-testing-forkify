@@ -30,6 +30,7 @@ module.exports = defineConfig({
 
       //Add this if block to work with cypress-split plugin.
       if (file === '') {
+        console.log('No custom config file found.');
         cypressSplit(on, config);
         return config;
       }

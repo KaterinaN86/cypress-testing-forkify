@@ -27,7 +27,7 @@
     "cypress-regression-pack": "npm run delete-results && npm run delete-mochawesome-report && npm run triggerMultipleTests-chrome && npm run mochawesome-merge",
     "cypress-multi-browser": "npm run triggerMultipleTests -- --browser electron --headed & npm run triggerMultipleTests -- --browser edge --headed",
     "cy:parallel": "cypress-parallel -s cy:run -t 2 -d 'cypress/e2e/parallel-tests' ",
-    "cy:streamline": "npx cypress run --spec \"cypress/e2e/parallel-tests/*.js\" --browser chrome --headed"
+    "cy:streamline": "npx cypress run --spec \"cypress/e2e/add-recipe.js,cypress/e2e/examples/traversing-elements.js,cypress/e2e/testHeader.js,cypress/e2e/examples/datepicker.js,cypress/e2e/testHomePage.js,cypress/e2e/search-recipe.js,cypress/e2e/testSearchResults.js,cypress/e2e/examples/mouse-actions.js,cypress/e2e/testSearch.js\" --browser chrome --headed"
   },
   "repository": {
     "type": "git",
