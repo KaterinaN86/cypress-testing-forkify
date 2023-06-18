@@ -132,15 +132,63 @@ To easily define correct selectors Chrome plugin **Ranorex celocity** can be add
 - Generated selectors are not robust enough because they often don't use specific attributes for the element that needs to be selected. For example, the following generated selector: `cy.get(".info_links_footer > :nth-child(5) > a")` can easily select the wrong element if the order of elements in the DOM is modified.
 
 - A **class selector** is a name preceded by a full stop (“.”), example: **.subcategories**.
-  - **Note**: a class selector is a typical CSS selector. When using CSS selector the **\$** symbol stands for **ends-with**, the **\^** symbol stands for **starts-with** and the **\*** stands for **contains**. For example: `a[class^="twitter"]` will select an anchor element with class attribute starting with **twitter** and selector `button[class$="add-recipe"]` will select button element with class attribute ending in **add-recipe** while selector `a[href*='product/category&path=']` selects anchor element with href attribute that contains text **product/category&path=**.
+- **Note**: a class selector is a typical CSS selector. When using CSS selector the **\$** symbol stands for **ends-with**, the **^** symbol stands for **starts-with** and the **\*** stands for **contains**. For example:
+
+```
+a[class^="twitter"]
+```
+
+will select an anchor element with class attribute starting with **twitter** and selector
+
+```
+button[class$="add-recipe"]
+```
+
+will select button element with class attribute ending in **add-recipe** while selector
+
+```
+a[href*='product/category&path=']
+```
+
+selects anchor element with href attribute that contains text **product/category&path=**.
+
 - An **ID selector** is a name preceded by the hash character (“#”), example **#homepageHeader**. Documentation on CSS selectors: [https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) and here [https://www.tutorialspoint.com/xpath/index.htm](https://www.tutorialspoint.com/xpath/index.htm).
-  - **Note**: While ID is used to identify only one element, a class can be used to identify more than one element. A combination of these selectors can also be used, as shown in example above: `'#contact-us > .thumbnail'`. This way, a child element, with class attribute ".thumbnail", of of the element with id "contact-us" is selected.
-- **XPath** selectors. Full documentation can be found here [https://www.w3schools.com/xml/xpath_syntax.asp](https://www.w3schools.com/xml/xpath_syntax.asp). These selectors usually start with **//** which means they are relative and all elements will be selected no matter where they are in the document. For absolute XPath **/** is used and elements are selected starting from the root of the document. The star symbol (**\***) represents a wild card. The **@** symbol is used to access an attribute: `//input[@id="quantity"]`. - An XPath expression often contains functions, like for example the string function **text()**: `//p[text()="Start by searching for a recipe or an ingredient. Have fun!"]`, **contains()**: `//div[contains(@class,"search")]` or **starts-with()**: `//input[starts-with(@placeholder,"Search")]`.
-- **XPath Axes** [https://www.w3schools.com/xml/xpath_axes.asp](https://www.w3schools.com/xml/xpath_axes.asp) are also very useful when writing XPath expressions. An axis is used to locate nodes relative to the current node on the tree. Basically, relations between nodes in the DOM tree can be used to select an element, for example: `//input[@id="description"]/following-sibling::textarea`.
+
+- **Note**: While ID is used to identify only one element, a class can be used to identify more than one element. A combination of these selectors can also be used, as shown in example above:
+
+```
+'#contact-us > .thumbnail'
+```
+
+This way, a child element, with class attribute ".thumbnail", of of the element with id "contact-us" is selected.
+
+- **XPath** selectors. Full documentation can be found here [https://www.w3schools.com/xml/xpath_syntax.asp](https://www.w3schools.com/xml/xpath_syntax.asp). These selectors usually start with **//** which means they are relative and all elements will be selected no matter where they are in the document. For absolute XPath **/** is used and elements are selected starting from the root of the document. The star symbol (**\***) represents a wild card. The **@** symbol is used to access an attribute: `//input[@id="quantity"]`.
+- An XPath expression often contains functions, like for example the string function **text()**:
+
+```
+//p[text()="Start by searching for a recipe or an ingredient. Have fun!"]
+```
+
+**contains()**:
+
+```
+//div[contains(@class,"search")]` or **starts-with()**: `//input[starts-with(@placeholder,"Search")]
+```
+
+- **XPath Axes** [https://www.w3schools.com/xml/xpath_axes.asp](https://www.w3schools.com/xml/xpath_axes.asp) are also very useful when writing XPath expressions. An axis is used to locate nodes relative to the current node on the tree. Basically, relations between nodes in the DOM tree can be used to select an element, for example:
+
+```
+//input[@id="description"]/following-sibling::textarea
+```
 
 ### Example using **XPath** plugin for VS Code
 
-- In order to use **XPath** selectors in Cypress a plugin [https://www.npmjs.com/package/@cypress/xpath](https://www.npmjs.com/package/@cypress/xpath) needs to be added in VS Code, using command: `npm install --save-dev @cypress/xpath`.
+- In order to use **XPath** selectors in Cypress a plugin [https://www.npmjs.com/package/@cypress/xpath](https://www.npmjs.com/package/@cypress/xpath) needs to be added in VS Code, using command:
+
+```
+npm install --save-dev @cypress/xpath
+```
+
 - Inside the **e2e.js** file (Located inside the support folder), simply add: `require('@cypress/xpath')`;
 - In the script **cypress/e2e/add-recipe.js** a test suite is written for testing the **Add Recipe** feature of the demo app.
 
@@ -842,4 +890,22 @@ Cypress UI tests perform 'test actions' via the browser, mimicking user actions 
 - **Note**: For this section basic knowledge of JSON is required [https://www.w3schools.com/js/js_json_intro.asp](https://www.w3schools.com/js/js_json_intro.asp). Application **Postman** also needs to be installed [https://www.postman.com/api-platform/](https://www.postman.com/api-platform/). GitHub repository [JSONServer](https://github.com/qauni/json-server) also needs to be cloned.
 
 After opening the project in VS Code, json-server dependencies also need to be installed using the bash terminal: `npm install -g json-server`. This given JSON server uses a JSON file as a database (**./db.json**). Tp run JSON server on [http://localhost:3000/](http://localhost:3000/), use command: `json-server --watch db.json`. On the server's homepage there are links to the posts, comments and profile pages. Any change made in the **./db.json** file will be reflected on the server automatically.
-After JSON server is running Postman can be used to communicate with endpoints directly without interacting with the UI. For example, to access data for post with id value of 2, the **GET** method needs to be used in a new HTTP request with URL: ``
+After JSON server is running Postman can be used to communicate with endpoints directly without interacting with the UI. For example:
+
+- to access data for post with id value of 2, the **GET** method needs to be used in a new HTTP request with URL:
+
+```
+http://localhost:3000/posts?id=2
+```
+
+- to post new comment, **POST** method is used for a new HTTP request to URL:
+
+```
+http://localhost:3000/comments/
+```
+
+with body:
+
+```
+ { "id": 3, "body": "My new comment on post 2", "postId": 2 }
+```
